@@ -1,25 +1,329 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.7 Granular synthesis</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.7 Granular synthesis</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch03.html" title="Chapter 3. Audio"><link rel="prev" href="ch03s06.html" title="3.6 Modulation synthesis"><link rel="next" href="ch03s08.html" title="3.8 Fourier analysis"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.7 Granular synthesis</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s06.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 3. Audio</th><td width="20%" align="right"> <a accesskey="p" href="ch03s08.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id430976"></a>3.7 Granular synthesis</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id430983"></a>3.7.1 Theory</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id430989"></a>3.7.1.1 Theory of granular synthesis</h4></div></div></div><p>With regard to sampling (<a class="link" href="ch03s03.html" title="3.3 Subtractive synthesis">3.3</a>) you learned how to change the speed of an existing sound in an array, but this also resulted in a change of pitch. One way to decouple these parameters, is by using granular synthesis. The idea of granular synthesis is that a sound is sampled at the original speed, but it is played at a different speed from each sample point.</p><p>You have an "indicator" that moves across the array at normal speed:</p><p>
-      <a class="ulink" href="patches/3-7-1-1-granular-theory1.pd" target="_top">patches/3-7-1-1-granular-theory1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7a.jpg"></div></div><p>Only at certain intervals do we get information about the indicator's present position; when this information is received, the array is played back from that point, albeit at a different speed. </p><p>To understand this better, let's say this is the normal playback speed:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7b.jpg"></div></div><p>...and this is a speed that is 'too fast':</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7c.jpg"></div></div><p>...then granular synthesis does this:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7d.jpg"></div></div><p>Though playback is 'too fast' (or 'too slow'), it always begins at a point that corresponds to the initial speed. These individual chunks are called "grains"; their size is referred to either as "grain size" or "window size".
-      These "grains" are so tiny and used in such large quantities, that they are not heard individually, but rather as a continuous whole. That's the magic behind granular synthesis.</p><p>Every individual "grain" is played back like this:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7e.jpg"></div></div><p>After a grain is played, there is a jump to the next position; this position is taken from the current position of the "main indicator". There is a special object to accomplish this: "samphold~". It works like "spigot", only on the signal level. Both the left and right inlets receive a signal. When there is descending step in the right inlet, "samphold~" immediately sends the sample currently in the left inlet and repeats this until the value in the right inlet is lower than the preceding one. This somewhat strange setting makes sense if the right input is a "phasor~". It receives only once - right at the end of a period - a descending step. A grain could be read out this way and the offset could be added to the end of it:</p><p>
-      <a class="ulink" href="patches/3-7-1-1-granular-theory2.pd" target="_top">patches/3-7-1-1-granular-theory2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7f.jpg"></div></div><p>This way, the whole thing sounds higher, but with the same duration as the original. If you 'look' closely, it's clear that this could lead to complications. If playback from one sample to the next is faster than the indicator's speed (which runs at the original speed), then we'll overshoot a sample and then return to it (thus repeating it) the next time "samphold~" is triggered. Conversely, if the "grains" are played back more slowly than the indicator moves, then some parts will be omitted. But as long as the original and the playback speeds do not diverge too dramatically, this is not (terribly) noticeable. To rectify this, some improvements can be made. First, you could use a Hanning window to suppress the clicks that result with every jump to a new value:</p><p>
-      <a class="ulink" href="patches/3-7-1-1-granular-theory3.pd" target="_top">patches/3-7-1-1-granular-theory3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7g.jpg"></div></div><p>The resultant gaps can be filled by using a second grain-reader, shifted by half a period:</p><p>
-      <a class="ulink" href="patches/3-7-1-1-granular-theory4.pd" target="_top">patches/3-7-1-1-granular-theory4.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7h.jpg"></div></div><p>The nice thing about granular synthesis is that, in addition to the ability to change pitch without affecting speed, you can change speed without affecting pitch:</p><p>
-      <a class="ulink" href="patches/3-7-1-1-granular-theory5.pd" target="_top">patches/3-7-1-1-granular-theory5.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7i.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id431485"></a>3.7.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id431492"></a>3.7.2.1 Live granular synthesis</h4></div></div></div><p>For use in live performance, you'll again need to use variable delays:</p><p>
-      <a class="ulink" href="patches/3-7-2-1-granular-live.pd" target="_top">patches/3-7-2-1-granular-live.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7j.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id431553"></a>3.7.2.2 Live with feedback</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-7-2-2-granular-live-feedback.pd" target="_top">patches/3-7-2-2-granular-live-feedback.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7k.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id431611"></a>3.7.2.3 More exercises</h4></div></div></div><p>Create four readers each with a variable window size. Experiment!</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id431631"></a>3.7.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id431637"></a>3.7.3.1 Granular technique as a synthesizer</h4></div></div></div><p>Granular synthesis can also be used as a synthesizer for pitch clouds, most conveniently using a random generator:</p><p>
-      <a class="ulink" href="patches/3-7-3-1-granularsynthesizer.pd" target="_top">patches/3-7-3-1-granularsynthesizer.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-7l.jpg"></div></div><p> </p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s06.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch03s08.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">3.6 Modulation synthesis </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.8 Fourier analysis</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch03.html" title="Chapter 3. Audio">
+<link rel="prev" href="ch03s06.html" title="3.6 Modulation synthesis">
+<link rel="next" href="ch03s08.html" title="3.8 Fourier analysis">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">3.7 Granular synthesis</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p"
+					href="ch03s06.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 3. Audio</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch03s08.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id430976"></a>3.7 Granular synthesis
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id430983"></a>3.7.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id430989"></a>3.7.1.1 Theory of granular synthesis
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					With regard to sampling (<a class="link" href="ch03s03.html"
+						title="3.3 Subtractive synthesis">3.3</a>) you learned how to
+					change the speed of an existing sound in an array, but this also
+					resulted in a change of pitch. One way to decouple these
+					parameters, is by using granular synthesis. The idea of granular
+					synthesis is that a sound is sampled at the original speed, but it
+					is played at a different speed from each sample point.
+				</p>
+				<p>You have an "indicator" that moves across the array at normal
+					speed:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-1-1-granular-theory1.pd"
+						target="_top">patches/3-7-1-1-granular-theory1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7a.jpg">
+					</div>
+				</div>
+				<p>Only at certain intervals do we get information about the
+					indicator's present position; when this information is received,
+					the array is played back from that point, albeit at a different
+					speed.</p>
+				<p>To understand this better, let's say this is the normal
+					playback speed:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7b.jpg">
+					</div>
+				</div>
+				<p>...and this is a speed that is 'too fast':</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7c.jpg">
+					</div>
+				</div>
+				<p>...then granular synthesis does this:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7d.jpg">
+					</div>
+				</div>
+				<p>Though playback is 'too fast' (or 'too slow'), it always
+					begins at a point that corresponds to the initial speed. These
+					individual chunks are called "grains"; their size is referred to
+					either as "grain size" or "window size". These "grains" are so tiny
+					and used in such large quantities, that they are not heard
+					individually, but rather as a continuous whole. That's the magic
+					behind granular synthesis.</p>
+				<p>Every individual "grain" is played back like this:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7e.jpg">
+					</div>
+				</div>
+				<p>After a grain is played, there is a jump to the next
+					position; this position is taken from the current position of the
+					"main indicator". There is a special object to accomplish this:
+					"samphold~". It works like "spigot", only on the signal level. Both
+					the left and right inlets receive a signal. When there is
+					descending step in the right inlet, "samphold~" immediately sends
+					the sample currently in the left inlet and repeats this until the
+					value in the right inlet is lower than the preceding one. This
+					somewhat strange setting makes sense if the right input is a
+					"phasor~". It receives only once - right at the end of a period - a
+					descending step. A grain could be read out this way and the offset
+					could be added to the end of it:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-1-1-granular-theory2.pd"
+						target="_top">patches/3-7-1-1-granular-theory2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7f.jpg">
+					</div>
+				</div>
+				<p>This way, the whole thing sounds higher, but with the same
+					duration as the original. If you 'look' closely, it's clear that
+					this could lead to complications. If playback from one sample to
+					the next is faster than the indicator's speed (which runs at the
+					original speed), then we'll overshoot a sample and then return to
+					it (thus repeating it) the next time "samphold~" is triggered.
+					Conversely, if the "grains" are played back more slowly than the
+					indicator moves, then some parts will be omitted. But as long as
+					the original and the playback speeds do not diverge too
+					dramatically, this is not (terribly) noticeable. To rectify this,
+					some improvements can be made. First, you could use a Hanning
+					window to suppress the clicks that result with every jump to a new
+					value:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-1-1-granular-theory3.pd"
+						target="_top">patches/3-7-1-1-granular-theory3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7g.jpg">
+					</div>
+				</div>
+				<p>The resultant gaps can be filled by using a second
+					grain-reader, shifted by half a period:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-1-1-granular-theory4.pd"
+						target="_top">patches/3-7-1-1-granular-theory4.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7h.jpg">
+					</div>
+				</div>
+				<p>The nice thing about granular synthesis is that, in addition
+					to the ability to change pitch without affecting speed, you can
+					change speed without affecting pitch:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-1-1-granular-theory5.pd"
+						target="_top">patches/3-7-1-1-granular-theory5.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7i.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id431485"></a>3.7.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id431492"></a>3.7.2.1 Live granular synthesis
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>For use in live performance, you'll again need to use
+					variable delays:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-2-1-granular-live.pd"
+						target="_top">patches/3-7-2-1-granular-live.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7j.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id431553"></a>3.7.2.2 Live with feedback
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-7-2-2-granular-live-feedback.pd"
+						target="_top">patches/3-7-2-2-granular-live-feedback.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7k.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id431611"></a>3.7.2.3 More exercises
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Create four readers each with a variable window size.
+					Experiment!</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id431631"></a>3.7.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id431637"></a>3.7.3.1 Granular technique as a
+								synthesizer
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Granular synthesis can also be used as a synthesizer for
+					pitch clouds, most conveniently using a random generator:</p>
+				<p>
+					<a class="ulink" href="patches/3-7-3-1-granularsynthesizer.pd"
+						target="_top">patches/3-7-3-1-granularsynthesizer.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-7l.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p"
+					href="ch03s06.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch03.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch03s08.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">3.6 Modulation
+					synthesis </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 3.8 Fourier
+					analysis</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

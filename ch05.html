@@ -1,29 +1,576 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 5. Miscellaneous</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 5. Miscellaneous</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="index.html" title="Programming Electronic Music in Pd"><link rel="prev" href="ch04s04.html" title="4.4 Network"><link rel="next" href="ch05s02.html" title="5.2 Visuals"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 5. Miscellaneous</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="p" href="ch05s02.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="chapt5"></a>Chapter 5. Miscellaneous</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch05.html#id436992">5.1 Streamlining</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05.html#id436998">5.1.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch05.html#id437963">5.1.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch05.html#id438180">5.1.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch05.html#id438451">5.1.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s02.html">5.2 Visuals</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s02.html#id438493">5.2.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#id438648">5.2.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#chapt5.2.3">5.2.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#id439901">5.2.4 For those especially interested</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id436992"></a>5.1 Streamlining</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id436998"></a>5.1.1 Theory</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt5.1.1.1"></a>5.1.1.1 Subpatches</h4></div></div></div><p>You already learned how to create subpatches in Pd in <a class="link" href="ch02s02.html#chapt2.2.4.4" title="2.2.4.4 Subpatches">2.2.4.4 </a>. Now, you'll learn how to use them wisely.</p><p>Let's say you have this patch:</p><p>
-      <a class="ulink" href="patches/5-1-1-1-subpatch1.pd" target="_top">patches/5-1-1-1-subpatch1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1a.jpg"></div></div><p>You could tidy it up by storing everything that doesn't require immediate access in a subpatch:</p><p>
-      <a class="ulink" href="patches/5-1-1-1-subpatch2.pd" target="_top">patches/5-1-1-1-subpatch2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1b.jpg"></div></div><p>It also makes sense to store the contents in several subpatches, in case you want to edit a specific part of it later.</p><p>
-      <a class="ulink" href="patches/5-1-1-1-subpatch3.pd" target="_top">patches/5-1-1-1-subpatch3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1c.jpg"></div></div><p>You could build a certain algorithm (here: random lines) for a patch that could be used in different places:</p><p>
-      <a class="ulink" href="patches/5-1-1-1-module.pd" target="_top">patches/5-1-1-1-module.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1d.jpg"></div></div><p>A subpatch like this is called a "module".</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id437250"></a>5.1.1.2 Abstractions</h4></div></div></div><p>If you have a subpatch that can be used universally, like the following one, which records two seconds in an array, then plays back the sample at a certain speed with variable amplitude:</p><p>
-      <a class="ulink" href="patches/5-1-1-2-abstraction1.pd" target="_top">patches/5-1-1-2-abstraction1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1e.jpg"></div></div><p>...and you want to use it in different locations, then a problem arises: once the subpatch has been duplicated, you have to rename the array and enter a new input (for the speed). Instead you could make an abstraction out of it; this is a patch that is stored as a separate file and can be retrieved with a multiple of variables.</p><p>Take the subpatch from before and save it as "record.pd". Then open a new patch and save it as "main" in the same directory as "record.pd". Then create an object called "record":</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1f.jpg"></div></div><p>"record" does not actually exist as an object in Pd. But if a patch with this name (plus the suffix ".pd") exists in the same directory, an object can be created that treats this patch like a subpatch.</p><p>An advantage of this lies in the variables. Reload the "record.pd" patch (<span class="strong"><strong>File</strong></span>
-       <span class="strong"><strong>Open</strong></span>). You can write variables in form of "$1", "$2", etc. inside objects. Let's define variables for the array name and the speed:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1g.jpg"></div></div><p>Now you can write the "record" object in the "main.pd" patch again, this time with two arguments for the two variables; the first argument is the array name and the second is the playback speed.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1h.jpg"></div></div><p>The volume, which we want to change in the main patch as well, is set as an inlet just as for a subpatch.</p><p>But we've still got the problem that the array has to be given a unique name every time we load "record" in the main patch. There is a special option in Pd to solve this that generates an individual random number that can be used as a name for a certain patch. This is generated by $0. You could make the abstraction "z-number.pd":</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1i.jpg"></div></div><p>A random number with an offset of 1000 is generated, and it counts up from there. Now, every time you call up the abstraction another number will be generated:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1j.jpg"></div></div><p>This is used to give the array a unique name. The conventional form is: $0-[arrayname]. You still need to set a variable ($1) for the speed. The volume should stay variable.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1l.jpg"></div></div><p>Finally, you can bring in graphic elements from an abstraction using the function "graph on parent". In the "record" patch, you can create a number box instead of an inlet for the volume, then right-click anywhere on the white surface  <span class="strong"><strong>Properties</strong></span>. Check 
-      "graph on parent" and then click "apply":</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1m.jpg"></div></div><p>You should see a red rectangle. All GUI objects that are enclosed within this red rectangle will appear later in the object. Move the number box for the volume inside the red rectangle, save "record.pd", and then create the object in the new patch:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1n.jpg"></div></div><p>In the new patch:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1o.jpg"></div></div><p>You can change the size and position of the red field here:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1p.jpg"></div></div><p>"Graph on Parent" also works with subpatches.</p><p>Two important points: you can view and change the contents of an abstraction in the main patch (simply click on the object in the main patch). However, changes you make here will not be saved! Only if you open the abstraction itself as a normal patch in Pd are the changes you make actually saved. The second point is that $-variables can only be written in objects in an abstraction; $1 in a message box would just have the normal meaning of an input in the message box (cf. <a class="link" href="ch02s02.html#chapt2.2.2.1.4" title="2.2.2.1.4 Messages with variables">2.2.2.1.4</a>). For example:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1q.jpg"></div></div><p>And, of course, if you copy the main patch and want to use it elsewhere (e.g., in another directory or on another computer) you have to copy the "record" patch as well. You make abstractions available at all times by saving them in the "extra" directory in the Pd directory. All patches found saved here are always available as abstractions. Similarly, you can create your own directory containing abstractions and configure it to load automatically. You can set a path for this under <span class="strong"><strong>File</strong></span>  <span class="strong"><strong>Path</strong></span>.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id437916"></a>5.1.1.3 Expanding Pd</h4></div></div></div><p>Many useful objects not included in the original version of Pd have been developed by programmers around the world since its inception. These objects are called "externals". Collections of externals are called "libraries", e.g., the zexy library or the MaxLib library. You have to put them in the folder called "Extra" and also integrate them into the startup process (<span class="strong"><strong>File</strong></span> 
-      <span class="strong"><strong>Startup</strong></span>). A new version of Pd called "Pd-extended" already includes libraries that expand the original version.</p><p>Pd can also be expanded through the use of additional programs. GEM is the most well known and is used to process video data and video files in a manner similar to how Pd processes sound and sound files. Additionally, open sound control (OSC) data from other programs that also have an OSC connection can be used in Pd. The Pd versions of some programmers have been expanded to such an extreme degree that they are barely recognizable as versions of Pd.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id437963"></a>5.1.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id437970"></a>5.1.2.1 Customize your Pd</h4></div></div></div><p>As mentioned in the previous chapter, Pd can be customized to a large extent. Let's create some useful abstractions.</p><p>For normal programming needs, a "dac~" object with a built-in volume slider, now called "dac":</p><p>
-      <a class="ulink" href="patches/dac.pd" target="_top">patches/dac.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1r.jpg"></div></div><p>A DSP switch, called "+dsp":</p><p>
-      <a class="ulink" href="patches/+dsp.pd" target="_top">patches/+dsp.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1s.jpg"></div></div><p>Graphic representation of a waveform:</p><p>
-      <a class="ulink" href="patches/wave.pd" target="_top">patches/wave.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-1t.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id438146"></a>5.1.2.2 More exercises</h4></div></div></div><p>As abstractions:</p><p>a) Integrate the DSP switch into the "dac" abstraction as well as a mute on/off button.</p><p>b) Build a compressor.</p><p>c) Build a graphic representation for an incoming spectrum.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id438180"></a>5.1.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id438187"></a>5.1.3.1 Creating a patch automatically</h4></div></div></div><p>We have a patch with a subpatch called "test". In the main patch, we send the following messages to the subpatch using "s pd-test" from top to bottom:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-3a.jpg"></div></div><p>"obj" creates an object; you enter the x/y-coordinates and the name of the object with its arguments. The same goes for the message box. The connection works like this: "connect [object number] [outlet number] [object number] [inlet number]". The objects are numbered in the order they are created, the outlets and inlets from left to right. Everything is initially set to 0. The message "clear" deletes the content of the subpatch.</p><p>Here is an overview of all the commands. At present (June 2008) some of these don't yet work:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-3b.jpg"></div></div><p>This makes it possible - albeit in a fairly complicated manner - to, say, create a certain number of arrays with an abstraction, which cannot be accomplished in Pd any other way (cf. <a class="link" href="ch03s02.html#chapt3.2.3.1" title="3.2.3.1 Pd's limitations">3.2.3.1</a>):</p><p>
-      <a class="ulink" href="patches/ntables.pd" target="_top">patches/ntables.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-3d.jpg"></div></div><p>With this abstraction, you can create ten arrays in the subpatch with a size of 44100:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-3e.jpg"></div></div><p>In this way, you could also create the subpatch in your main patch:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-1-3f.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id438451"></a>5.1.4 For those especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id438457"></a>5.1.4.1 Writing your own objects</h4></div></div></div><p>...is naturally also possible. Pd is merely a surface for a program in the programming language C, which allows you to write your own objects ("externals"). Here is a guide to help you do this: <a class="ulink" href="http://iem.at/pd/externals-HOWTO/" target="_top">http://iem.at/pd/externals-HOWTO/</a></p><p> </p><p> </p><hr></div></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="p" href="ch05s02.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">4.4 Network </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5.2 Visuals</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="prev" href="ch04s04.html" title="4.4 Network">
+<link rel="next" href="ch05s02.html" title="5.2 Visuals">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">Chapter 5. Miscellaneous</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p"
+					href="ch04s04.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<th width="60%" align="center"> </th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch05s02.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="chapter" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title">
+						<a name="chapt5"></a>Chapter 5. Miscellaneous
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="toc">
+			<p>
+				<b>Table of Contents</b>
+			</p>
+			<dl>
+				<dt>
+					<span class="sect1"><a href="ch05.html#id436992">5.1
+							Streamlining</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect2"><a href="ch05.html#id436998">5.1.1
+									Theory</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05.html#id437963">5.1.2
+									Applications</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05.html#id438180">5.1.3
+									Appendix</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05.html#id438451">5.1.4
+									For those especially interested</a></span>
+						</dt>
+					</dl>
+				</dd>
+				<dt>
+					<span class="sect1"><a href="ch05s02.html">5.2 Visuals</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect2"><a href="ch05s02.html#id438493">5.2.1
+									Theory</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05s02.html#id438648">5.2.2
+									Applications</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05s02.html#chapt5.2.3">5.2.3
+									Appendix</a></span>
+						</dt>
+						<dt>
+							<span class="sect2"><a href="ch05s02.html#id439901">5.2.4
+									For those especially interested</a></span>
+						</dt>
+					</dl>
+				</dd>
+			</dl>
+		</div>
+		<div class="sect1" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h2 class="title" style="clear: both">
+							<a name="id436992"></a>5.1 Streamlining
+						</h2>
+					</div>
+				</div>
+			</div>
+			<div class="sect2" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h3 class="title">
+								<a name="id436998"></a>5.1.1 Theory
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="chapt5.1.1.1"></a>5.1.1.1 Subpatches
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>
+						You already learned how to create subpatches in Pd in <a
+							class="link" href="ch02s02.html#chapt2.2.4.4"
+							title="2.2.4.4 Subpatches">2.2.4.4 </a>. Now, you'll learn how to
+						use them wisely.
+					</p>
+					<p>Let's say you have this patch:</p>
+					<p>
+						<a class="ulink" href="patches/5-1-1-1-subpatch1.pd" target="_top">patches/5-1-1-1-subpatch1.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1a.jpg">
+						</div>
+					</div>
+					<p>You could tidy it up by storing everything that doesn't
+						require immediate access in a subpatch:</p>
+					<p>
+						<a class="ulink" href="patches/5-1-1-1-subpatch2.pd" target="_top">patches/5-1-1-1-subpatch2.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1b.jpg">
+						</div>
+					</div>
+					<p>It also makes sense to store the contents in several
+						subpatches, in case you want to edit a specific part of it later.</p>
+					<p>
+						<a class="ulink" href="patches/5-1-1-1-subpatch3.pd" target="_top">patches/5-1-1-1-subpatch3.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1c.jpg">
+						</div>
+					</div>
+					<p>You could build a certain algorithm (here: random lines) for
+						a patch that could be used in different places:</p>
+					<p>
+						<a class="ulink" href="patches/5-1-1-1-module.pd" target="_top">patches/5-1-1-1-module.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1d.jpg">
+						</div>
+					</div>
+					<p>A subpatch like this is called a "module".</p>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id437250"></a>5.1.1.2 Abstractions
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>If you have a subpatch that can be used universally, like
+						the following one, which records two seconds in an array, then
+						plays back the sample at a certain speed with variable amplitude:</p>
+					<p>
+						<a class="ulink" href="patches/5-1-1-2-abstraction1.pd"
+							target="_top">patches/5-1-1-2-abstraction1.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1e.jpg">
+						</div>
+					</div>
+					<p>...and you want to use it in different locations, then a
+						problem arises: once the subpatch has been duplicated, you have to
+						rename the array and enter a new input (for the speed). Instead
+						you could make an abstraction out of it; this is a patch that is
+						stored as a separate file and can be retrieved with a multiple of
+						variables.</p>
+					<p>Take the subpatch from before and save it as "record.pd".
+						Then open a new patch and save it as "main" in the same directory
+						as "record.pd". Then create an object called "record":</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1f.jpg">
+						</div>
+					</div>
+					<p>"record" does not actually exist as an object in Pd. But if
+						a patch with this name (plus the suffix ".pd") exists in the same
+						directory, an object can be created that treats this patch like a
+						subpatch.</p>
+					<p>
+						An advantage of this lies in the variables. Reload the "record.pd"
+						patch (<span class="strong"><strong>File</strong></span> <span
+							class="strong"><strong>Open</strong></span>). You can write
+						variables in form of "$1", "$2", etc. inside objects. Let's define
+						variables for the array name and the speed:
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1g.jpg">
+						</div>
+					</div>
+					<p>Now you can write the "record" object in the "main.pd" patch
+						again, this time with two arguments for the two variables; the
+						first argument is the array name and the second is the playback
+						speed.</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1h.jpg">
+						</div>
+					</div>
+					<p>The volume, which we want to change in the main patch as
+						well, is set as an inlet just as for a subpatch.</p>
+					<p>But we've still got the problem that the array has to be
+						given a unique name every time we load "record" in the main patch.
+						There is a special option in Pd to solve this that generates an
+						individual random number that can be used as a name for a certain
+						patch. This is generated by $0. You could make the abstraction
+						"z-number.pd":</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1i.jpg">
+						</div>
+					</div>
+					<p>A random number with an offset of 1000 is generated, and it
+						counts up from there. Now, every time you call up the abstraction
+						another number will be generated:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1j.jpg">
+						</div>
+					</div>
+					<p>This is used to give the array a unique name. The
+						conventional form is: $0-[arrayname]. You still need to set a
+						variable ($1) for the speed. The volume should stay variable.</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1l.jpg">
+						</div>
+					</div>
+					<p>
+						Finally, you can bring in graphic elements from an abstraction
+						using the function "graph on parent". In the "record" patch, you
+						can create a number box instead of an inlet for the volume, then
+						right-click anywhere on the white surface <span class="strong"><strong>Properties</strong></span>.
+						Check "graph on parent" and then click "apply":
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1m.jpg">
+						</div>
+					</div>
+					<p>You should see a red rectangle. All GUI objects that are
+						enclosed within this red rectangle will appear later in the
+						object. Move the number box for the volume inside the red
+						rectangle, save "record.pd", and then create the object in the new
+						patch:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1n.jpg">
+						</div>
+					</div>
+					<p>In the new patch:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1o.jpg">
+						</div>
+					</div>
+					<p>You can change the size and position of the red field here:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1p.jpg">
+						</div>
+					</div>
+					<p>"Graph on Parent" also works with subpatches.</p>
+					<p>
+						Two important points: you can view and change the contents of an
+						abstraction in the main patch (simply click on the object in the
+						main patch). However, changes you make here will not be saved!
+						Only if you open the abstraction itself as a normal patch in Pd
+						are the changes you make actually saved. The second point is that
+						$-variables can only be written in objects in an abstraction; $1
+						in a message box would just have the normal meaning of an input in
+						the message box (cf. <a class="link"
+							href="ch02s02.html#chapt2.2.2.1.4"
+							title="2.2.2.1.4 Messages with variables">2.2.2.1.4</a>). For
+						example:
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1q.jpg">
+						</div>
+					</div>
+					<p>
+						And, of course, if you copy the main patch and want to use it
+						elsewhere (e.g., in another directory or on another computer) you
+						have to copy the "record" patch as well. You make abstractions
+						available at all times by saving them in the "extra" directory in
+						the Pd directory. All patches found saved here are always
+						available as abstractions. Similarly, you can create your own
+						directory containing abstractions and configure it to load
+						automatically. You can set a path for this under <span
+							class="strong"><strong>File</strong></span> <span class="strong"><strong>Path</strong></span>.
+					</p>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id437916"></a>5.1.1.3 Expanding Pd
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>
+						Many useful objects not included in the original version of Pd
+						have been developed by programmers around the world since its
+						inception. These objects are called "externals". Collections of
+						externals are called "libraries", e.g., the zexy library or the
+						MaxLib library. You have to put them in the folder called "Extra"
+						and also integrate them into the startup process (<span
+							class="strong"><strong>File</strong></span> <span class="strong"><strong>Startup</strong></span>).
+						A new version of Pd called "Pd-extended" already includes
+						libraries that expand the original version.
+					</p>
+					<p>Pd can also be expanded through the use of additional
+						programs. GEM is the most well known and is used to process video
+						data and video files in a manner similar to how Pd processes sound
+						and sound files. Additionally, open sound control (OSC) data from
+						other programs that also have an OSC connection can be used in Pd.
+						The Pd versions of some programmers have been expanded to such an
+						extreme degree that they are barely recognizable as versions of
+						Pd.</p>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+			<div class="sect2" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h3 class="title">
+								<a name="id437963"></a>5.1.2 Applications
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id437970"></a>5.1.2.1 Customize your Pd
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>As mentioned in the previous chapter, Pd can be customized
+						to a large extent. Let's create some useful abstractions.</p>
+					<p>For normal programming needs, a "dac~" object with a
+						built-in volume slider, now called "dac":</p>
+					<p>
+						<a class="ulink" href="patches/dac.pd" target="_top">patches/dac.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1r.jpg">
+						</div>
+					</div>
+					<p>A DSP switch, called "+dsp":</p>
+					<p>
+						<a class="ulink" href="patches/+dsp.pd" target="_top">patches/+dsp.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1s.jpg">
+						</div>
+					</div>
+					<p>Graphic representation of a waveform:</p>
+					<p>
+						<a class="ulink" href="patches/wave.pd" target="_top">patches/wave.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-1t.jpg">
+						</div>
+					</div>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id438146"></a>5.1.2.2 More exercises
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>As abstractions:</p>
+					<p>a) Integrate the DSP switch into the "dac" abstraction as
+						well as a mute on/off button.</p>
+					<p>b) Build a compressor.</p>
+					<p>c) Build a graphic representation for an incoming spectrum.</p>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+			<div class="sect2" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h3 class="title">
+								<a name="id438180"></a>5.1.3 Appendix
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id438187"></a>5.1.3.1 Creating a patch automatically
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>We have a patch with a subpatch called "test". In the main
+						patch, we send the following messages to the subpatch using "s
+						pd-test" from top to bottom:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-3a.jpg">
+						</div>
+					</div>
+					<p>"obj" creates an object; you enter the x/y-coordinates and
+						the name of the object with its arguments. The same goes for the
+						message box. The connection works like this: "connect [object
+						number] [outlet number] [object number] [inlet number]". The
+						objects are numbered in the order they are created, the outlets
+						and inlets from left to right. Everything is initially set to 0.
+						The message "clear" deletes the content of the subpatch.</p>
+					<p>Here is an overview of all the commands. At present (June
+						2008) some of these don't yet work:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-3b.jpg">
+						</div>
+					</div>
+					<p>
+						This makes it possible - albeit in a fairly complicated manner -
+						to, say, create a certain number of arrays with an abstraction,
+						which cannot be accomplished in Pd any other way (cf. <a
+							class="link" href="ch03s02.html#chapt3.2.3.1"
+							title="3.2.3.1 Pd's limitations">3.2.3.1</a>):
+					</p>
+					<p>
+						<a class="ulink" href="patches/ntables.pd" target="_top">patches/ntables.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-3d.jpg">
+						</div>
+					</div>
+					<p>With this abstraction, you can create ten arrays in the
+						subpatch with a size of 44100:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-3e.jpg">
+						</div>
+					</div>
+					<p>In this way, you could also create the subpatch in your main
+						patch:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-1-3f.jpg">
+						</div>
+					</div>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+			<div class="sect2" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h3 class="title">
+								<a name="id438451"></a>5.1.4 For those especially interested
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="sect3" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h4 class="title">
+									<a name="id438457"></a>5.1.4.1 Writing your own objects
+								</h4>
+							</div>
+						</div>
+					</div>
+					<p>
+						...is naturally also possible. Pd is merely a surface for a
+						program in the programming language C, which allows you to write
+						your own objects ("externals"). Here is a guide to help you do
+						this: <a class="ulink" href="http://iem.at/pd/externals-HOWTO/"
+							target="_top">http://iem.at/pd/externals-HOWTO/</a>
+					</p>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p"
+					href="ch04s04.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<td width="20%" align="center"> </td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch05s02.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">4.4 Network </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 5.2 Visuals</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

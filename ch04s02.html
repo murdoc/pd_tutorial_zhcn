@@ -1,22 +1,204 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.2 Sequencer</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>4.2 Sequencer</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch04.html" title="Chapter 4. Controlling sound"><link rel="prev" href="ch04.html" title="Chapter 4. Controlling sound"><link rel="next" href="ch04s03.html" title="4.3 HIDs"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.2 Sequencer</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 4. Controlling sound</th><td width="20%" align="right"> <a accesskey="p" href="ch04s03.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id434985"></a>4.2 Sequencer</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id434992"></a>4.2.1 Theory</h3></div></div></div><p>Instead of automatic processes, we can also write proper "scores" for a Pd patch. A simple example would be the use of many "send" commands, as described in <a class="link" href="ch02s02.html#chapt2.2.4.1.3" title="2.2.4.1.3 A series of send lists">2.2.4.1.3</a>:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1a.jpg"></div></div><p>But to be able to include much more information and determine the chronological sequence, the following section will cover ways to realize 'scores' in Pd.</p><p> </p><hr><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id435060"></a>4.2.1.1 Text file</h4></div></div></div><p>You can retrieve numbers and symbols from a normal text file or, conversely, save numbers and symbols to a text file using "textfile". Let's first look at the saving function. Click the messages from top to bottom:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1b.jpg"></div></div><p>Now Pd has created a text file called "file1.txt" in the same directory as the patch. It contains:</p><pre class="programlisting">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch04.html" title="Chapter 4. Controlling sound">
+<link rel="prev" href="ch04.html" title="Chapter 4. Controlling sound">
+<link rel="next" href="ch04s03.html" title="4.3 HIDs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">4.2 Sequencer</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p" href="ch04.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 4. Controlling sound</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch04s03.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id434985"></a>4.2 Sequencer
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id434992"></a>4.2.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<p>
+				Instead of automatic processes, we can also write proper "scores"
+				for a Pd patch. A simple example would be the use of many "send"
+				commands, as described in <a class="link"
+					href="ch02s02.html#chapt2.2.4.1.3"
+					title="2.2.4.1.3 A series of send lists">2.2.4.1.3</a>:
+			</p>
+			<div class="informalfigure">
+				<div class="mediaobject">
+					<img src="images/kap4/4-2-1a.jpg">
+				</div>
+			</div>
+			<p>But to be able to include much more information and determine
+				the chronological sequence, the following section will cover ways to
+				realize 'scores' in Pd.</p>
+			<p></p>
+			<hr>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id435060"></a>4.2.1.1 Text file
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You can retrieve numbers and symbols from a normal text file
+					or, conversely, save numbers and symbols to a text file using
+					"textfile". Let's first look at the saving function. Click the
+					messages from top to bottom:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1b.jpg">
+					</div>
+				</div>
+				<p>Now Pd has created a text file called "file1.txt" in the same
+					directory as the patch. It contains:</p>
+				<pre class="programlisting">
       hello;
       world!;
-     </pre><p>"add" creates a symbol or number and follows it with a semicolon. "add2" doesn't create a semicolon.</p><p>If you want to read what you've saved, load the file and use "rewind" to go all the way to the beginning. Now every time you hit 'bang', one line (up to the semicolon) will be sent through the left outlet. After the last line, a bang is sent out the right outlet.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1c.jpg"></div></div><p> You can also write something and read it with an object without ever saving it as a file. You can also use "clear" to delete everything. "set" first deletes everything and then begins a new line. Click from top to bottom:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1d.jpg"></div></div><p>You can also load a file so that the semicolons don't appear:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1e.jpg"></div></div><p>"write name.txt cr" also works in the same way.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id435280"></a>4.2.1.2 Qlist</h4></div></div></div><p>A practical expansion to "textfile" is "qlist". This can be used to send chronologically ordered messages with a text file to "receive" objects. The file "orders.txt" has these contents:</p><pre class="programlisting">
+     </pre>
+				<p>"add" creates a symbol or number and follows it with a
+					semicolon. "add2" doesn't create a semicolon.</p>
+				<p>If you want to read what you've saved, load the file and use
+					"rewind" to go all the way to the beginning. Now every time you hit
+					'bang', one line (up to the semicolon) will be sent through the
+					left outlet. After the last line, a bang is sent out the right
+					outlet.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1c.jpg">
+					</div>
+				</div>
+				<p>You can also write something and read it with an object
+					without ever saving it as a file. You can also use "clear" to
+					delete everything. "set" first deletes everything and then begins a
+					new line. Click from top to bottom:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1d.jpg">
+					</div>
+				</div>
+				<p>You can also load a file so that the semicolons don't appear:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1e.jpg">
+					</div>
+				</div>
+				<p>"write name.txt cr" also works in the same way.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id435280"></a>4.2.1.2 Qlist
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>A practical expansion to "textfile" is "qlist". This can be
+					used to send chronologically ordered messages with a text file to
+					"receive" objects. The file "orders.txt" has these contents:</p>
+				<pre class="programlisting">
       0 tom 55;
       1000 imi -12;
       4000 tom 3;
       2000 imi -2;
-     </pre><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1f.jpg"></div></div><p>At the beginning, "tom" receives the number 55; one second later, "imi" receives -12; four seconds later "tom" receives 3; two seconds later "imi" receives -2. It works the same way with symbols.</p><p>Otherwise, "qlist" has the same functions as "textfile":
-      add, add2, rewind, clear.</p><p>You can also modify the tempo using "tempo" and a factor:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-1g.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id435406"></a> 4.2.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt4.2.2.1"></a>4.2.2.1 Score for a patch</h4></div></div></div><p>Provided the sounds have been assembled, you can now write a piece of music as a text file. Let's say you have this patch...</p><p>
-      <a class="ulink" href="patches/4-2-2-1-score.pd" target="_top">patches/4-2-2-1-score.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-2a.jpg"></div></div><p>...and this "score" (patches/p.txt):</p><pre class="programlisting">
+     </pre>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1f.jpg">
+					</div>
+				</div>
+				<p>At the beginning, "tom" receives the number 55; one second
+					later, "imi" receives -12; four seconds later "tom" receives 3; two
+					seconds later "imi" receives -2. It works the same way with
+					symbols.</p>
+				<p>Otherwise, "qlist" has the same functions as "textfile": add,
+					add2, rewind, clear.</p>
+				<p>You can also modify the tempo using "tempo" and a factor:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-1g.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id435406"></a> 4.2.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="chapt4.2.2.1"></a>4.2.2.1 Score for a patch
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Provided the sounds have been assembled, you can now write a
+					piece of music as a text file. Let's say you have this patch...</p>
+				<p>
+					<a class="ulink" href="patches/4-2-2-1-score.pd" target="_top">patches/4-2-2-1-score.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-2a.jpg">
+					</div>
+				</div>
+				<p>...and this "score" (patches/p.txt):</p>
+				<pre class="programlisting">
       0 p1off 1000;
       0 p1togg 1;
       0 p1amp 1;
@@ -39,14 +221,167 @@ href="style.css" />
       5000 amp 0;
       0 p1togg 0;
       0 p2togg 0;
-     </pre><p>You could also write information from sounds:</p><p>
-      <a class="ulink" href="patches/4-2-2-1-write-score.pd" target="_top">patches/4-2-2-1-write-score.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-2b.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id435551"></a>4.2.2.2 More exercises</h4></div></div></div><p>Write stochastic algorithms into a text file that uses a "qlist" to play back the patch from <a class="link" href="ch04s02.html#chapt4.2.2.1" title="4.2.2.1 Score for a patch">4.2.2.1</a> at different speeds.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id435579"></a>4.2.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id435585"></a>4.2.3.1 Modifying qlist</h4></div></div></div><p>The time for qlist are delta values, that is, they always describe the time interval from one event to the next. Sometimes it might be more practical to write text file with absolute   time intervals instead. The "remote" object can be used to accomplish this. "remote" (not available in the original version of Pd; it's part of Pd-extended) receives the name of a receive object as a list followed by the value that you want to send there. This saves you from having to use several "sends":</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-3a.jpg"></div></div><p>So you can build your own qlist using absolute values:</p><p>
-      <a class="ulink" href="patches/4-2-3-1-klist.pd" target="_top">patches/4-2-3-1-klist.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-3b.jpg"></div></div><p>And here's how to change a list of delta values into absolute values:</p><p>
-      <a class="ulink" href="patches/4-2-3-1-klist-convert1.pd" target="_top">patches/4-2-3-1-klist-convert1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-3c.jpg"></div></div><p>And conversely:</p><p>
-      <a class="ulink" href="patches/4-2-3-1-klist-convert2.pd" target="_top">patches/4-2-3-1-klist-convert2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-2-3d.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id435810"></a>4.2.4 For those especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id435817"></a>4.2.4.1 Creating lists externally: Lisp</h4></div></div></div><p>You can also take "textfile" to use text files that contain previously conducted algorithms. There are special programming languages that can accomplish this. One of these languages is LISP, which is especially well suited to the creation and processing of lists:</p><p>
-      <a class="ulink" href="../../en.wikipedia.org@80/wiki/Lisp_(programming_language)" target="_top">http://en.wikipedia.org/wiki/Lisp_(programming_language)</a>
-     </p><p> </p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch04s03.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 4. Controlling sound </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.3 HIDs</td></tr></table></div></body></html>
+     </pre>
+				<p>You could also write information from sounds:</p>
+				<p>
+					<a class="ulink" href="patches/4-2-2-1-write-score.pd"
+						target="_top">patches/4-2-2-1-write-score.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-2b.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id435551"></a>4.2.2.2 More exercises
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					Write stochastic algorithms into a text file that uses a "qlist" to
+					play back the patch from <a class="link"
+						href="ch04s02.html#chapt4.2.2.1" title="4.2.2.1 Score for a patch">4.2.2.1</a>
+					at different speeds.
+				</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id435579"></a>4.2.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id435585"></a>4.2.3.1 Modifying qlist
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>The time for qlist are delta values, that is, they always
+					describe the time interval from one event to the next. Sometimes it
+					might be more practical to write text file with absolute time
+					intervals instead. The "remote" object can be used to accomplish
+					this. "remote" (not available in the original version of Pd; it's
+					part of Pd-extended) receives the name of a receive object as a
+					list followed by the value that you want to send there. This saves
+					you from having to use several "sends":</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-3a.jpg">
+					</div>
+				</div>
+				<p>So you can build your own qlist using absolute values:</p>
+				<p>
+					<a class="ulink" href="patches/4-2-3-1-klist.pd" target="_top">patches/4-2-3-1-klist.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-3b.jpg">
+					</div>
+				</div>
+				<p>And here's how to change a list of delta values into absolute
+					values:</p>
+				<p>
+					<a class="ulink" href="patches/4-2-3-1-klist-convert1.pd"
+						target="_top">patches/4-2-3-1-klist-convert1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-3c.jpg">
+					</div>
+				</div>
+				<p>And conversely:</p>
+				<p>
+					<a class="ulink" href="patches/4-2-3-1-klist-convert2.pd"
+						target="_top">patches/4-2-3-1-klist-convert2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap4/4-2-3d.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id435810"></a>4.2.4 For those especially interested
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id435817"></a>4.2.4.1 Creating lists externally: Lisp
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You can also take "textfile" to use text files that contain
+					previously conducted algorithms. There are special programming
+					languages that can accomplish this. One of these languages is LISP,
+					which is especially well suited to the creation and processing of
+					lists:</p>
+				<p>
+					<a class="ulink"
+						href="../../en.wikipedia.org@80/wiki/Lisp_(programming_language)"
+						target="_top">http://en.wikipedia.org/wiki/Lisp_(programming_language)</a>
+				</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p" href="ch04.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch04.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch04s03.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">Chapter 4. Controlling
+					sound </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 4.3 HIDs</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

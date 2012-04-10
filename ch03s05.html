@@ -1,41 +1,594 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.5 Wave shaping</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.5 Wave shaping</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch03.html" title="Chapter 3. Audio"><link rel="prev" href="ch03s04.html" title="3.4 Sampling"><link rel="next" href="ch03s06.html" title="3.6 Modulation synthesis"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.5 Wave shaping</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 3. Audio</th><td width="20%" align="right"> <a accesskey="p" href="ch03s06.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect3.5"></a>3.5 Wave shaping</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id428536"></a>3.5.1 Theory</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id428542"></a>3.5.1.1 Waveforms</h4></div></div></div><p>In <a class="link" href="ch03.html#chapt3.1.1.1.2" title="3.1.1.1.2 Waves">3.1.1.1.2</a> you learned about different waveforms (sine, sawtooth, triangle, square, and pulse). Pd has objects for two of these, namely "osc~" for sine waves and "phasor~" for sawtooth. You can use an array to display the waveforms:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-waveform-graph.pd" target="_top">patches/3-5-1-1-waveform-graph.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5a.jpg"></div></div><p>N.B.: The sawtooth of the "phasor~" object always goes from 0 to
-      1; it never goes into the negative range. You could make it stronger, however, by performing a small calculation:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-strong-phasor.pd" target="_top">patches/3-5-1-1-strong-phasor.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5b.jpg"></div></div><p>You can also create other waveforms by attaching a few operations to "phasor~". To accomplish this, you'll need to use a new object: "clip~", which cuts off everything outside the indicated range. As the arguments, enter two numbers for the lower and upper limits; numbers outside of these limits will be 'clipped':</p><p>
-      <a class="ulink" href="patches/3-5-1-1-other-waveforms.pd" target="_top">patches/3-5-1-1-other-waveforms.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5d.jpg"></div></div><p>Now on to the Triangle wave:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-triangel.pd" target="_top">patches/3-5-1-1-triangel.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5e.jpg"></div></div><p>Square wave:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-square.pd" target="_top">patches/3-5-1-1-square.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5f.jpg"></div></div><p>Pulse:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-pulse.pd" target="_top">patches/3-5-1-1-pulse.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5g.jpg"></div></div><p>These are all standard waveforms that exhibit certain characteristics:</p><p>Sine: a single ton without any overtones</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5h.jpg"></div></div><p>Triangle: like a sine wave, except with the odd partials as well</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5i.jpg"></div></div><p>Square: only the odd partials</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5j.jpg"></div></div><p>Sawtooth: all partials</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5k.jpg"></div></div><p>Pulse: all partials present at nearly equal intensities</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5l.jpg"></div></div><p>You can observe that symmetrical waveforms exhibit only the odd partials (within each period, exactly two periods of each subsequent odd partial fit; that's what is meant by symmetrical), while asymmetrical waveforms always exhibit the even partials as well.</p><p>These waveforms can also be approximated using additive synthesis:</p><p>
-      <a class="ulink" href="patches/3-5-1-1-waveform-fourier.pd" target="_top">patches/3-5-1-1-waveform-fourier.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5m.jpg"></div></div><p>There is unlimited room for experimentation here and that's one way to arrive at new sounds. You can also draw your own waveforms directly in an array. To do this, you must be in execute mode and move the mouse to a line in the array. The cursor arrow changes direction:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4e.jpg"></div></div><p>While holding the mouse button, move the mouse to draw your own waveform.</p><p>This is, however, somewhat tedious and 'inelegant'. Let's examine then the theory of 'wave shaping':</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429198"></a>3.5.1.2 Transfer functions</h4></div></div></div><p>A linear function undergoes what's called a "transfer function". For linear functions, you can use the "phasor~", which always goes from 0 to 1. You could make a cosine wave, for example, using the "cos~" object, which calculates a cosine function:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5n.jpg"></div></div><p>You can make all kinds of transfers this way; here's another example:</p><p>
-      <a class="ulink" href="patches/3-5-1-2-transferfunction.pd" target="_top">patches/3-5-1-2-transferfunction.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5o.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429305"></a>3.5.1.3 (Controlled) Random waveforms</h4></div></div></div><p>You could also record noise into an array and then read it out periodically - i.e., read the same thing out again and again (cf. Karplus-Strong). If you do this more than 20 times a second, you'll hear a pitch:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5p.jpg"></div></div><p>The spectrum of this sound is naturally somewhat unpredictable. Every time you fill the array with random numbers with the "noise~" object, you get a new wave with new characteristics.</p><p>But there is still somewhat of a system at work. You could, for example, interpolate all the clicks (large jumps in the waveform) to achieve a smoother resultant waveform. Let's generate random points using linear interpolation ("Uzi" (Pd-extended) generates the number of bangs specified in its argument and sends them as fast as possible):</p><p>
-      <a class="ulink" href="patches/3-5-1-3-wavgorithm.pd" target="_top">patches/3-5-1-3-wavgorithm.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5q.jpg"><div class="caption">In this example, four points are always used for interpolations.</div></div></div><p>The result will be even softer if you use a sinusoid interpolation instead of a linear one. Here, ten points are used for interpolations:</p><p>
-      <a class="ulink" href="patches/3-5-1-3-wavgorithm+sin.pd" target="_top">patches/3-5-1-3-wavgorithm+sin.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5r.jpg"></div></div><p>Now the connection from the end of the period to its beginning has to be interpolated as well. We'll use a windowing for this and program the calculation in a subpatch.</p><p>
-      <a class="ulink" href="patches/3-5-1-3-wavgorithm+sin+fenster.pd" target="_top">patches/3-5-1-3-wavgorithm+sin+fenster.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5s.jpg"></div></div><p>This way, the membrane is at 0 at the beginning and end of each period. The result could be even smoother if it were "windowed" with the Hanning window (<a class="link" href="ch03s09.html#chapt3.9.4" title="3.9.4 For those especially interested">3.9.4.1</a>).</p><p>In addition, transfer functions using known waveforms - e.g., a square wave, which would intensify the odd partials - are also possible.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5t.jpg"></div></div><p>And so on. In these last few examples, the wave has to be created on the control level; in contrast to the first examples that used transfer functions, we cannot change these "live".</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429587"></a>3.5.1.4 Wave stealing</h4></div></div></div><p>A final technique that might be considered wave-shaping synthesis is "wave-stealing". This involves taking a small section of known pieces of music...</p><p>
-      <a class="ulink" href="patches/3-5-1-4-wavestealing.pd" target="_top">patches/3-5-1-4-wavestealing.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5u.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id429653"></a>3.5.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429659"></a>3.5.2.1 Singing waveforms</h4></div></div></div><p>With the following patch, it is possible to record waveforms with a microphone to sing waveforms.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5v.jpg"></div></div><p>The vowels (German pronunciation) look something like this:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5w.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429756"></a>3.5.2.2 Transfers</h4></div></div></div><p>And this input signal could naturally also be sent through a transfer function:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5x.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429809"></a>3.5.2.3 Even / odd partials</h4></div></div></div><p>You can also divide a sawtooth wave into even and odd partials. To accomplish this, you'll need to use "wrap~". It calculates the difference between the input number and the nearest integer below it (the absolute value is taken, so that the result is always positive). A few short examples:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5c.jpg"></div></div><p>And now for the sawtooth division: the "wrap~" object is used to phase shift the sawtooth wave; this is then added to and subtracted from the original signal, resulting in a sawtooth wave with twice the frequency and a square wave.</p><p>
-      <a class="ulink" href="patches/3-5-2-3-even-odd-partials.pd" target="_top">patches/3-5-2-3-even-odd-partials.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5y.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429916"></a>3.5.2.4 More exercises</h4></div></div></div><p>a) Create a wave that changes constantly.</p><p>b) Create a patch in which the interpolation and array points used for (controlled) random waveforms are variable in number.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id429942"></a>3.5.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id429948"></a>3.5.3.1 Foldover</h4></div></div></div><p>At this point, a particularly thorny problem in digital sound processing must be addressed: foldover. Let's first examine this situation:</p><p>
-      <a class="ulink" href="patches/3-5-3-1-foldover1.pd" target="_top">patches/3-5-3-1-foldover1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5z.jpg"></div></div><p>What happens? After 22050 Hz, the direction changes until it reaches 44100 Hz, at which point you get a pitch with a frequency of 0 Hz (after this, the pitch would go up again). The reason for this is that a sample rate with of 44100 Hz can produce a wave of 22050 Hz maximum (cf. <a class="link" href="ch03.html#chapt3.1.1.3.1" title="3.1.1.3.1 Nyquist Theorem">3.1.1.3.1</a>). Moreover, there are some typical reading errors. Let's take a look at three waves with different frequencies: the top has a frequency of 11025 Hz, the middle 22050, and the bottom somewhat more than 22050. The markings stand for reference points (for the samples), which have a constant speed of 44100 per second.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5z2.jpg"></div></div><p>Each period in a wave with 11025 Hz can be represented with four points (of course, the characteristic sine wave shape is lost). 22050 Hz is the highest frequency that can be correctly represented, since Nyquist's Theorem requires at least two points per period. Errors will occur with frequencies higher than this; not every period will be captured and the points of measurement will actually record a lower frequency instead of a higher one.</p><p>The problem is much more pronounced for waveforms that exhibit overtones, e.g., with a pulse:</p><p>
-      <a class="ulink" href="patches/3-5-3-1-foldover2.pd" target="_top">patches/3-5-3-1-foldover2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5z3.jpg"></div></div><p>Here the effect can be noticed much earlier: after 700 Hz some overtones are inaccurately captured. This is because the pulse waveform practically consists of just a single line, which is quickly 'missed'. A solution to this problem is to begin with a pulse waveform, but to broaden the wave as the frequency increases, so that you end up with a sine wave at the end:</p><p>
-      <a class="ulink" href="patches/3-5-3-1-foldover3.pd" target="_top">patches/3-5-3-1-foldover3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-5z4.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id430193"></a>3.5.4 For those especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id430200"></a>3.5.4.1 GENDY</h4></div></div></div><p>Iannis Xenakis in his later years developed a process for wave generation called GENDY. He 'composed' nothing but waveforms and derivatives of them, e.g., in his tape piece "Gendy 3".</p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s04.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch03s06.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">3.4 Sampling </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.6 Modulation synthesis</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch03.html" title="Chapter 3. Audio">
+<link rel="prev" href="ch03s04.html" title="3.4 Sampling">
+<link rel="next" href="ch03s06.html" title="3.6 Modulation synthesis">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">3.5 Wave shaping</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p"
+					href="ch03s04.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 3. Audio</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch03s06.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="sect3.5"></a>3.5 Wave shaping
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id428536"></a>3.5.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id428542"></a>3.5.1.1 Waveforms
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					In <a class="link" href="ch03.html#chapt3.1.1.1.2"
+						title="3.1.1.1.2 Waves">3.1.1.1.2</a> you learned about different
+					waveforms (sine, sawtooth, triangle, square, and pulse). Pd has
+					objects for two of these, namely "osc~" for sine waves and
+					"phasor~" for sawtooth. You can use an array to display the
+					waveforms:
+				</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-waveform-graph.pd"
+						target="_top">patches/3-5-1-1-waveform-graph.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5a.jpg">
+					</div>
+				</div>
+				<p>N.B.: The sawtooth of the "phasor~" object always goes from 0
+					to 1; it never goes into the negative range. You could make it
+					stronger, however, by performing a small calculation:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-strong-phasor.pd"
+						target="_top">patches/3-5-1-1-strong-phasor.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5b.jpg">
+					</div>
+				</div>
+				<p>You can also create other waveforms by attaching a few
+					operations to "phasor~". To accomplish this, you'll need to use a
+					new object: "clip~", which cuts off everything outside the
+					indicated range. As the arguments, enter two numbers for the lower
+					and upper limits; numbers outside of these limits will be
+					'clipped':</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-other-waveforms.pd"
+						target="_top">patches/3-5-1-1-other-waveforms.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5d.jpg">
+					</div>
+				</div>
+				<p>Now on to the Triangle wave:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-triangel.pd" target="_top">patches/3-5-1-1-triangel.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5e.jpg">
+					</div>
+				</div>
+				<p>Square wave:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-square.pd" target="_top">patches/3-5-1-1-square.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5f.jpg">
+					</div>
+				</div>
+				<p>Pulse:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-pulse.pd" target="_top">patches/3-5-1-1-pulse.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5g.jpg">
+					</div>
+				</div>
+				<p>These are all standard waveforms that exhibit certain
+					characteristics:</p>
+				<p>Sine: a single ton without any overtones</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5h.jpg">
+					</div>
+				</div>
+				<p>Triangle: like a sine wave, except with the odd partials as
+					well</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5i.jpg">
+					</div>
+				</div>
+				<p>Square: only the odd partials</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5j.jpg">
+					</div>
+				</div>
+				<p>Sawtooth: all partials</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5k.jpg">
+					</div>
+				</div>
+				<p>Pulse: all partials present at nearly equal intensities</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5l.jpg">
+					</div>
+				</div>
+				<p>You can observe that symmetrical waveforms exhibit only the
+					odd partials (within each period, exactly two periods of each
+					subsequent odd partial fit; that's what is meant by symmetrical),
+					while asymmetrical waveforms always exhibit the even partials as
+					well.</p>
+				<p>These waveforms can also be approximated using additive
+					synthesis:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-1-waveform-fourier.pd"
+						target="_top">patches/3-5-1-1-waveform-fourier.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5m.jpg">
+					</div>
+				</div>
+				<p>There is unlimited room for experimentation here and that's
+					one way to arrive at new sounds. You can also draw your own
+					waveforms directly in an array. To do this, you must be in execute
+					mode and move the mouse to a line in the array. The cursor arrow
+					changes direction:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4e.jpg">
+					</div>
+				</div>
+				<p>While holding the mouse button, move the mouse to draw your
+					own waveform.</p>
+				<p>This is, however, somewhat tedious and 'inelegant'. Let's
+					examine then the theory of 'wave shaping':</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429198"></a>3.5.1.2 Transfer functions
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>A linear function undergoes what's called a "transfer
+					function". For linear functions, you can use the "phasor~", which
+					always goes from 0 to 1. You could make a cosine wave, for example,
+					using the "cos~" object, which calculates a cosine function:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5n.jpg">
+					</div>
+				</div>
+				<p>You can make all kinds of transfers this way; here's another
+					example:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-2-transferfunction.pd"
+						target="_top">patches/3-5-1-2-transferfunction.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5o.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429305"></a>3.5.1.3 (Controlled) Random waveforms
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You could also record noise into an array and then read it
+					out periodically - i.e., read the same thing out again and again
+					(cf. Karplus-Strong). If you do this more than 20 times a second,
+					you'll hear a pitch:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5p.jpg">
+					</div>
+				</div>
+				<p>The spectrum of this sound is naturally somewhat
+					unpredictable. Every time you fill the array with random numbers
+					with the "noise~" object, you get a new wave with new
+					characteristics.</p>
+				<p>But there is still somewhat of a system at work. You could,
+					for example, interpolate all the clicks (large jumps in the
+					waveform) to achieve a smoother resultant waveform. Let's generate
+					random points using linear interpolation ("Uzi" (Pd-extended)
+					generates the number of bangs specified in its argument and sends
+					them as fast as possible):</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-3-wavgorithm.pd" target="_top">patches/3-5-1-3-wavgorithm.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5q.jpg">
+						<div class="caption">In this example, four points are always
+							used for interpolations.</div>
+					</div>
+				</div>
+				<p>The result will be even softer if you use a sinusoid
+					interpolation instead of a linear one. Here, ten points are used
+					for interpolations:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-3-wavgorithm+sin.pd"
+						target="_top">patches/3-5-1-3-wavgorithm+sin.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5r.jpg">
+					</div>
+				</div>
+				<p>Now the connection from the end of the period to its
+					beginning has to be interpolated as well. We'll use a windowing for
+					this and program the calculation in a subpatch.</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-3-wavgorithm+sin+fenster.pd"
+						target="_top">patches/3-5-1-3-wavgorithm+sin+fenster.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5s.jpg">
+					</div>
+				</div>
+				<p>
+					This way, the membrane is at 0 at the beginning and end of each
+					period. The result could be even smoother if it were "windowed"
+					with the Hanning window (<a class="link"
+						href="ch03s09.html#chapt3.9.4"
+						title="3.9.4 For those especially interested">3.9.4.1</a>).
+				</p>
+				<p>In addition, transfer functions using known waveforms - e.g.,
+					a square wave, which would intensify the odd partials - are also
+					possible.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5t.jpg">
+					</div>
+				</div>
+				<p>And so on. In these last few examples, the wave has to be
+					created on the control level; in contrast to the first examples
+					that used transfer functions, we cannot change these "live".</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429587"></a>3.5.1.4 Wave stealing
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>A final technique that might be considered wave-shaping
+					synthesis is "wave-stealing". This involves taking a small section
+					of known pieces of music...</p>
+				<p>
+					<a class="ulink" href="patches/3-5-1-4-wavestealing.pd"
+						target="_top">patches/3-5-1-4-wavestealing.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5u.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id429653"></a>3.5.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429659"></a>3.5.2.1 Singing waveforms
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>With the following patch, it is possible to record waveforms
+					with a microphone to sing waveforms.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5v.jpg">
+					</div>
+				</div>
+				<p>The vowels (German pronunciation) look something like this:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5w.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429756"></a>3.5.2.2 Transfers
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>And this input signal could naturally also be sent through a
+					transfer function:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5x.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429809"></a>3.5.2.3 Even / odd partials
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You can also divide a sawtooth wave into even and odd
+					partials. To accomplish this, you'll need to use "wrap~". It
+					calculates the difference between the input number and the nearest
+					integer below it (the absolute value is taken, so that the result
+					is always positive). A few short examples:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5c.jpg">
+					</div>
+				</div>
+				<p>And now for the sawtooth division: the "wrap~" object is used
+					to phase shift the sawtooth wave; this is then added to and
+					subtracted from the original signal, resulting in a sawtooth wave
+					with twice the frequency and a square wave.</p>
+				<p>
+					<a class="ulink" href="patches/3-5-2-3-even-odd-partials.pd"
+						target="_top">patches/3-5-2-3-even-odd-partials.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5y.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429916"></a>3.5.2.4 More exercises
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>a) Create a wave that changes constantly.</p>
+				<p>b) Create a patch in which the interpolation and array points
+					used for (controlled) random waveforms are variable in number.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id429942"></a>3.5.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id429948"></a>3.5.3.1 Foldover
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>At this point, a particularly thorny problem in digital sound
+					processing must be addressed: foldover. Let's first examine this
+					situation:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-3-1-foldover1.pd" target="_top">patches/3-5-3-1-foldover1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5z.jpg">
+					</div>
+				</div>
+				<p>
+					What happens? After 22050 Hz, the direction changes until it
+					reaches 44100 Hz, at which point you get a pitch with a frequency
+					of 0 Hz (after this, the pitch would go up again). The reason for
+					this is that a sample rate with of 44100 Hz can produce a wave of
+					22050 Hz maximum (cf. <a class="link"
+						href="ch03.html#chapt3.1.1.3.1" title="3.1.1.3.1 Nyquist Theorem">3.1.1.3.1</a>).
+					Moreover, there are some typical reading errors. Let's take a look
+					at three waves with different frequencies: the top has a frequency
+					of 11025 Hz, the middle 22050, and the bottom somewhat more than
+					22050. The markings stand for reference points (for the samples),
+					which have a constant speed of 44100 per second.
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5z2.jpg">
+					</div>
+				</div>
+				<p>Each period in a wave with 11025 Hz can be represented with
+					four points (of course, the characteristic sine wave shape is
+					lost). 22050 Hz is the highest frequency that can be correctly
+					represented, since Nyquist's Theorem requires at least two points
+					per period. Errors will occur with frequencies higher than this;
+					not every period will be captured and the points of measurement
+					will actually record a lower frequency instead of a higher one.</p>
+				<p>The problem is much more pronounced for waveforms that
+					exhibit overtones, e.g., with a pulse:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-3-1-foldover2.pd" target="_top">patches/3-5-3-1-foldover2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5z3.jpg">
+					</div>
+				</div>
+				<p>Here the effect can be noticed much earlier: after 700 Hz
+					some overtones are inaccurately captured. This is because the pulse
+					waveform practically consists of just a single line, which is
+					quickly 'missed'. A solution to this problem is to begin with a
+					pulse waveform, but to broaden the wave as the frequency increases,
+					so that you end up with a sine wave at the end:</p>
+				<p>
+					<a class="ulink" href="patches/3-5-3-1-foldover3.pd" target="_top">patches/3-5-3-1-foldover3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-5z4.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id430193"></a>3.5.4 For those especially interested
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id430200"></a>3.5.4.1 GENDY
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Iannis Xenakis in his later years developed a process for
+					wave generation called GENDY. He 'composed' nothing but waveforms
+					and derivatives of them, e.g., in his tape piece "Gendy 3".</p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p"
+					href="ch03s04.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch03.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch03s06.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">3.4 Sampling </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 3.6 Modulation
+					synthesis</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

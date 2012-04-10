@@ -1,30 +1,616 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Programming Electronic Music in Pd</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Programming Electronic Music in Pd</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><meta name="description" content="Pd was initiated by American software engineer Miller Puckette, who previous co-developed the well known and similarly structured software Max/Msp. Pd is not commercial software; i.e., it was not developed by a corporation and is not for sale. Instead, it is &#8220;open source&#8221;: its source code is not the (patented) property of a corporation, but is rather freely available to all. One drawback to this is that a detailed operating manual for users who lack programming experience has not existed until now. In contrast to a corporation&#8212; which has a monetary interest in ensuring that first-time users can easily operate new software&#8212;the open source movement lacks such a driving force to make itself accessible. This book is an attempt to fill that gap. This tutorial is designed for self-study, principally for composers. It begins with explanations of basic programming and acoustic principles then gradually builds up to the most advanced electronic music processing techniques. The book&#8217;s teaching approach is focused primarily on hearing, which we consider a faster and more enjoyable way to absorb new concepts than through abstract formulas. The patches described are available for download."><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="next" href="pr01.html" title="Preface"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Programming Electronic Music in Pd</th></tr><tr><td width="20%" align="left"> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="p" href="pr01.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="book" lang="en"><div class="titlepage"><div><div><h1 class="title"><a name="id403003"></a>Programming Electronic Music in Pd</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Johannes</span> <span class="surname">Kreidler</span></h3><code class="email">&lt;<a class="email" href="mailto@www.kreidler-net.de">www.kreidler-net.de</a>&gt;</code></div></div><div><p class="pubdate">27-01-2009</p></div><div><div class="revhistory"><table border="1" width="100%" summary="Revision history"><tr><th align="left" valign="top" colspan="3"><b>Revision History</b></th></tr><tr><td align="left">Revision 0.71e</td><td align="left">27-01-2009</td><td align="left">JK</td></tr></table></div></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>Pd was initiated by American software engineer Miller Puckette, who 
-    previous co-developed the well known and similarly structured 
-    software Max/Msp. Pd is not commercial software; i.e., it was not 
-    developed by a corporation and is not for sale. Instead, it is &#8220;open 
-    source&#8221;: its source code is not the (patented) property of a corporation, 
-    but is rather freely available to all. One drawback to this is that 
-    a detailed operating manual for users who lack programming 
-    experience has not existed until now. In contrast to a corporation&#8212; 
-    which has a monetary interest in ensuring that first-time users can 
-    easily operate new software&#8212;the open source movement lacks such a 
-    driving force to make itself accessible. This book is an attempt to fill 
-    that gap. 
-   </p><p>
-    This tutorial is designed for self-study, principally for composers. 
-    It begins with explanations of basic programming and acoustic 
-    principles then gradually builds up to the most advanced 
-    electronic music processing techniques. The book&#8217;s teaching approach 
-    is focused primarily on hearing, which we consider a faster and 
-    more enjoyable way to absorb new concepts than through abstract 
-    formulas.
-   </p><p>
-    The patches described are available for download.
-       </p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="preface"><a href="pr01.html">Preface</a></span></dt><dt><span class="preface"><a href="pr02.html">Introduction to this book's methodology</a></span></dt><dt><span class="chapter"><a href="ch01.html">1. Introduction to Pd</a></span></dt><dd><dl><dt><span class="sect1"><a href="ch01.html#id390680">1.1 General remarks</a></span></dt><dt><span class="sect1"><a href="ch01s02.html">1.2 Installing and setting up Pd</a></span></dt></dl></dd><dt><span class="chapter"><a href="ch02.html">2. Programming with Pd for the first time</a></span></dt><dd><dl><dt><span class="sect1"><a href="ch02.html#chapt2.1">2.1 Introduction</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch02.html#chapt2.1.1">2.1.1 A simple example</a></span></dt><dt><span class="sect2"><a href="ch02.html#id409690">2.1.2 Surface elements in Pd</a></span></dt><dt><span class="sect2"><a href="ch02.html#chapt2.1.3">2.1.3 Summary</a></span></dt><dt><span class="sect2"><a href="ch02.html#id410073">2.1.4 Appendix</a></span></dt><dt><span class="sect2"><a href="ch02.html#chapt2.1.5">2.1.5 For those especially interested: Atoms</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch02s02.html">2.2 The control level</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch02s02.html#id410422">2.2.1 Mathematical operations and order</a></span></dt><dt><span class="sect2"><a href="ch02s02.html#id412354">2.2.2 Different types of data </a></span></dt><dt><span class="sect2"><a href="ch02s02.html#id414535">2.2.3 Time operations </a></span></dt><dt><span class="sect2"><a href="ch02s02.html#chapt2.2.4">2.2.4 Miscellaneous </a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="ch03.html">3. Audio</a></span></dt><dd><dl><dt><span class="sect1"><a href="ch03.html#chapt3.1">3.1 Basics</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03.html#chapt3.1.1">3.1.1 Pitch</a></span></dt><dt><span class="sect2"><a href="ch03.html#id420457">3.1.2 Volume</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s02.html">3.2 Additive Synthesis</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s02.html#id422752">3.2.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s02.html#id423178">3.2.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s02.html#id423446">3.2.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch03s02.html#id423470">3.2.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s03.html">3.3 Subtractive synthesis</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s03.html#id423529">3.3.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#id423958">3.3.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#id424124">3.3.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#id424323">3.3.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s04.html">3.4 Sampling</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s04.html#id424588">3.4.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#id426491">3.4.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#id427629">3.4.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#chapt3.4.4">3.4.4 For especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s05.html">3.5 Wave shaping</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s05.html#id428536">3.5.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#id429653">3.5.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#id429942">3.5.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#id430193">3.5.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s06.html">3.6 Modulation synthesis</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s06.html#id430227">3.6.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s06.html#id430644">3.6.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s06.html#id430857">3.6.3 Appendix</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s07.html">3.7 Granular synthesis</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s07.html#id430983">3.7.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s07.html#id431485">3.7.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s07.html#id431631">3.7.3 Appendix</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s08.html">3.8 Fourier analysis</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s08.html#id431716">3.8.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s08.html#id432343">3.8.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s08.html#id432668">3.8.3 Appendix</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s09.html">3.9 Amplitude corrections</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s09.html#id433175">3.9.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch03s09.html#id433476">3.9.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch03s09.html#id433538">3.9.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch03s09.html#chapt3.9.4">3.9.4 For those especially interested</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="ch04.html">4. Controlling sound</a></span></dt><dd><dl><dt><span class="sect1"><a href="ch04.html#id434101">4.1 Algorithms</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch04.html#id434108">4.1.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch04.html#id434212">4.1.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch04.html#id434824">4.1.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch04.html#id434942">4.1.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch04s02.html">4.2 Sequencer</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch04s02.html#id434992">4.2.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch04s02.html#id435406"> 4.2.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch04s02.html#id435579">4.2.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch04s02.html#id435810">4.2.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch04s03.html">4.3 HIDs</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch04s03.html#id435858">4.3.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch04s03.html#id436455">4.3.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch04s03.html#id436620">4.3.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch04s03.html#id436682">4.3.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch04s04.html">4.4 Network</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch04s04.html#id436740">4.4.1 Netsend / Netreceive</a></span></dt><dt><span class="sect2"><a href="ch04s04.html#id436855">4.4.2 OSC</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="ch05.html">5. Miscellaneous</a></span></dt><dd><dl><dt><span class="sect1"><a href="ch05.html#id436992">5.1 Streamlining</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05.html#id436998">5.1.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch05.html#id437963">5.1.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch05.html#id438180">5.1.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch05.html#id438451">5.1.4 For those especially interested</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch05s02.html">5.2 Visuals</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch05s02.html#id438493">5.2.1 Theory</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#id438648">5.2.2 Applications</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#chapt5.2.3">5.2.3 Appendix</a></span></dt><dt><span class="sect2"><a href="ch05s02.html#id439901">5.2.4 For those especially interested</a></span></dt></dl></dd></dl></dd><dt><span class="appendix"><a href="apa.html">A. Solutions</a></span></dt><dd><dl><dt><span class="sect1"><a href="apa.html#id439987">2.2.1.2.8</a></span></dt><dt><span class="sect1"><a href="apas02.html">2.2.2.2.6</a></span></dt><dt><span class="sect1"><a href="apas03.html">2.2.3.2.9</a></span></dt><dt><span class="sect1"><a href="apas04.html">3.1.1.2.2 </a></span></dt><dt><span class="sect1"><a href="apas05.html">3.1.2.2.5</a></span></dt><dt><span class="sect1"><a href="apas06.html">3.3.2.3</a></span></dt><dt><span class="sect1"><a href="apas07.html">3.4.2.11</a></span></dt><dt><span class="sect1"><a href="apas08.html">3.5.2.4</a></span></dt><dt><span class="sect1"><a href="apas09.html">3.7.2.3</a></span></dt><dt><span class="sect1"><a href="apas10.html">3.8.3.5</a></span></dt><dt><span class="sect1"><a href="apas11.html">3.9.2.2</a></span></dt><dt><span class="sect1"><a href="apas12.html">4.1.2.3</a></span></dt><dt><span class="sect1"><a href="apas13.html">4.2.2.2</a></span></dt><dt><span class="sect1"><a href="apas14.html">5.1.2.2</a></span></dt><dt><span class="sect1"><a href="apas15.html">5.2.2.4</a></span></dt></dl></dd></dl></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="p" href="pr01.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top"> </td><td width="20%" align="center"> </td><td width="40%" align="right" valign="top"> Preface</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<meta name="description"
+	content="Pd was initiated by American software engineer Miller Puckette, who previous co-developed the well known and similarly structured software Max/Msp. Pd is not commercial software; i.e., it was not developed by a corporation and is not for sale. Instead, it is &#8220;open source&#8221;: its source code is not the (patented) property of a corporation, but is rather freely available to all. One drawback to this is that a detailed operating manual for users who lack programming experience has not existed until now. In contrast to a corporation&#8212; which has a monetary interest in ensuring that first-time users can easily operate new software&#8212;the open source movement lacks such a driving force to make itself accessible. This book is an attempt to fill that gap. This tutorial is designed for self-study, principally for composers. It begins with explanations of basic programming and acoustic principles then gradually builds up to the most advanced electronic music processing techniques. The book&#8217;s teaching approach is focused primarily on hearing, which we consider a faster and more enjoyable way to absorb new concepts than through abstract formulas. The patches described are available for download.">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="next" href="pr01.html" title="Preface">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">Programming Electronic Music in
+					Pd</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"> </td>
+				<th width="60%" align="center"> </th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="pr01.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="book" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h1 class="title">
+						<a name="id403003"></a>Programming Electronic Music in Pd
+					</h1>
+				</div>
+				<div>
+					<div class="author">
+						<h3 class="author">
+							<span class="firstname">Johannes</span> <span class="surname">Kreidler</span>
+						</h3>
+						<code class="email">
+							&lt;<a class="email" href="mailto@www.kreidler-net.de">www.kreidler-net.de</a>&gt;
+						</code>
+					</div>
+				</div>
+				<div>
+					<p class="pubdate">27-01-2009</p>
+				</div>
+				<div>
+					<div class="revhistory">
+						<table border="1" width="100%" summary="Revision history">
+							<tr>
+								<th align="left" valign="top" colspan="3"><b>Revision
+										History</b></th>
+							</tr>
+							<tr>
+								<td align="left">Revision 0.71e</td>
+								<td align="left">27-01-2009</td>
+								<td align="left">JK</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div>
+					<div class="abstract">
+						<p class="title">
+							<b>Abstract</b>
+						</p>
+						<p>Pd was initiated by American software engineer Miller
+							Puckette, who previous co-developed the well known and similarly
+							structured software Max/Msp. Pd is not commercial software; i.e.,
+							it was not developed by a corporation and is not for sale.
+							Instead, it is &#8220;open source&#8221;: its source code is not
+							the (patented) property of a corporation, but is rather freely
+							available to all. One drawback to this is that a detailed
+							operating manual for users who lack programming experience has
+							not existed until now. In contrast to a corporation&#8212; which
+							has a monetary interest in ensuring that first-time users can
+							easily operate new software&#8212;the open source movement lacks
+							such a driving force to make itself accessible. This book is an
+							attempt to fill that gap.</p>
+						<p>This tutorial is designed for self-study, principally for
+							composers. It begins with explanations of basic programming and
+							acoustic principles then gradually builds up to the most advanced
+							electronic music processing techniques. The book&#8217;s teaching
+							approach is focused primarily on hearing, which we consider a
+							faster and more enjoyable way to absorb new concepts than through
+							abstract formulas.</p>
+						<p>The patches described are available for download.</p>
+					</div>
+				</div>
+			</div>
+			<hr>
+		</div>
+		<div class="toc">
+			<p>
+				<b>Table of Contents</b>
+			</p>
+			<dl>
+				<dt>
+					<span class="preface"><a href="pr01.html">Preface</a></span>
+				</dt>
+				<dt>
+					<span class="preface"><a href="pr02.html">Introduction
+							to this book's methodology</a></span>
+				</dt>
+				<dt>
+					<span class="chapter"><a href="ch01.html">1.
+							Introduction to Pd</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="ch01.html#id390680">1.1
+									General remarks</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="ch01s02.html">1.2
+									Installing and setting up Pd</a></span>
+						</dt>
+					</dl>
+				</dd>
+				<dt>
+					<span class="chapter"><a href="ch02.html">2. Programming
+							with Pd for the first time</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="ch02.html#chapt2.1">2.1
+									Introduction</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch02.html#chapt2.1.1">2.1.1
+											A simple example</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02.html#id409690">2.1.2
+											Surface elements in Pd</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02.html#chapt2.1.3">2.1.3
+											Summary</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02.html#id410073">2.1.4
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02.html#chapt2.1.5">2.1.5
+											For those especially interested: Atoms</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch02s02.html">2.2 The
+									control level</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch02s02.html#id410422">2.2.1
+											Mathematical operations and order</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02s02.html#id412354">2.2.2
+											Different types of data </a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02s02.html#id414535">2.2.3
+											Time operations </a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch02s02.html#chapt2.2.4">2.2.4
+											Miscellaneous </a></span>
+								</dt>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+				<dt>
+					<span class="chapter"><a href="ch03.html">3. Audio</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="ch03.html#chapt3.1">3.1
+									Basics</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03.html#chapt3.1.1">3.1.1
+											Pitch</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03.html#id420457">3.1.2
+											Volume</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s02.html">3.2
+									Additive Synthesis</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s02.html#id422752">3.2.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s02.html#id423178">3.2.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s02.html#id423446">3.2.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s02.html#id423470">3.2.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s03.html">3.3
+									Subtractive synthesis</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s03.html#id423529">3.3.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s03.html#id423958">3.3.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s03.html#id424124">3.3.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s03.html#id424323">3.3.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s04.html">3.4
+									Sampling</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s04.html#id424588">3.4.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s04.html#id426491">3.4.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s04.html#id427629">3.4.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s04.html#chapt3.4.4">3.4.4
+											For especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s05.html">3.5 Wave
+									shaping</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s05.html#id428536">3.5.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s05.html#id429653">3.5.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s05.html#id429942">3.5.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s05.html#id430193">3.5.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s06.html">3.6
+									Modulation synthesis</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s06.html#id430227">3.6.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s06.html#id430644">3.6.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s06.html#id430857">3.6.3
+											Appendix</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s07.html">3.7
+									Granular synthesis</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s07.html#id430983">3.7.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s07.html#id431485">3.7.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s07.html#id431631">3.7.3
+											Appendix</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s08.html">3.8 Fourier
+									analysis</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s08.html#id431716">3.8.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s08.html#id432343">3.8.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s08.html#id432668">3.8.3
+											Appendix</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch03s09.html">3.9
+									Amplitude corrections</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch03s09.html#id433175">3.9.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s09.html#id433476">3.9.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s09.html#id433538">3.9.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch03s09.html#chapt3.9.4">3.9.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+				<dt>
+					<span class="chapter"><a href="ch04.html">4. Controlling
+							sound</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="ch04.html#id434101">4.1
+									Algorithms</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch04.html#id434108">4.1.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04.html#id434212">4.1.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04.html#id434824">4.1.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04.html#id434942">4.1.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch04s02.html">4.2
+									Sequencer</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch04s02.html#id434992">4.2.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s02.html#id435406">
+											4.2.2 Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s02.html#id435579">4.2.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s02.html#id435810">4.2.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch04s03.html">4.3 HIDs</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch04s03.html#id435858">4.3.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s03.html#id436455">4.3.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s03.html#id436620">4.3.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s03.html#id436682">4.3.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch04s04.html">4.4 Network</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch04s04.html#id436740">4.4.1
+											Netsend / Netreceive</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch04s04.html#id436855">4.4.2
+											OSC</a></span>
+								</dt>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+				<dt>
+					<span class="chapter"><a href="ch05.html">5.
+							Miscellaneous</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="ch05.html#id436992">5.1
+									Streamlining</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch05.html#id436998">5.1.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05.html#id437963">5.1.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05.html#id438180">5.1.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05.html#id438451">5.1.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+						<dt>
+							<span class="sect1"><a href="ch05s02.html">5.2 Visuals</a></span>
+						</dt>
+						<dd>
+							<dl>
+								<dt>
+									<span class="sect2"><a href="ch05s02.html#id438493">5.2.1
+											Theory</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05s02.html#id438648">5.2.2
+											Applications</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05s02.html#chapt5.2.3">5.2.3
+											Appendix</a></span>
+								</dt>
+								<dt>
+									<span class="sect2"><a href="ch05s02.html#id439901">5.2.4
+											For those especially interested</a></span>
+								</dt>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+				<dt>
+					<span class="appendix"><a href="apa.html">A. Solutions</a></span>
+				</dt>
+				<dd>
+					<dl>
+						<dt>
+							<span class="sect1"><a href="apa.html#id439987">2.2.1.2.8</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas02.html">2.2.2.2.6</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas03.html">2.2.3.2.9</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas04.html">3.1.1.2.2 </a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas05.html">3.1.2.2.5</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas06.html">3.3.2.3</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas07.html">3.4.2.11</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas08.html">3.5.2.4</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas09.html">3.7.2.3</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas10.html">3.8.3.5</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas11.html">3.9.2.2</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas12.html">4.1.2.3</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas13.html">4.2.2.2</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas14.html">5.1.2.2</a></span>
+						</dt>
+						<dt>
+							<span class="sect1"><a href="apas15.html">5.2.2.4</a></span>
+						</dt>
+					</dl>
+				</dd>
+			</dl>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"> </td>
+				<td width="20%" align="center"> </td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="pr01.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top"> </td>
+				<td width="20%" align="center"> </td>
+				<td width="40%" align="right" valign="top"> Preface</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

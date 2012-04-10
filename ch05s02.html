@@ -1,37 +1,513 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>5.2 Visuals</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5.2 Visuals</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch05.html" title="Chapter 5. Miscellaneous"><link rel="prev" href="ch05.html" title="Chapter 5. Miscellaneous"><link rel="next" href="co01.html" title="Afterword"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2 Visuals</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 5. Miscellaneous</th><td width="20%" align="right"> <a accesskey="p" href="co01.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id438486"></a>5.2 Visuals</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id438493"></a>5.2.1 Theory</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id438499"></a>5.2.1.1 Pd is visual and this can be programmed</h4></div></div></div><p>The tools for visual representation were already introduced in <a class="link" href="ch02s02.html#chapt2.2.4.3" title="2.2.4.3 GUI options">2.2.4.3</a>. Here, we'll examine how to control a canvas.</p><p>Create a canvas (<span class="strong"><strong>Put</strong></span>
-       <span class="strong"><strong>Canvas</strong></span>) and give it the receive symbol "c1" under properties (right-click on the box in the canvas's upper left):</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-1a.jpg"></div></div><p>Now you can send the canvas messages:</p><p>
-      <a class="ulink" href="patches/5-2-1-1-canvas.pd" target="_top">patches/5-2-1-1-canvas.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-1b.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id438648"></a>5.2.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id438655"></a>5.2.2.1 Main patch window and subpatches</h4></div></div></div><p>This should be clear from the previous material: a tidy patch comprises the main window and subpatches (cf. <a class="link" href="ch03s04.html#chapt3.4.2.4" title="3.4.2.4 Sampler-player">3.4.2.4</a> and <a class="link" href="ch05.html#chapt5.1.1.1" title="5.1.1.1 Subpatches">5.1.1.1</a>). In this manual, I've usually refrained from this sort of organization for the sake of clarity (it's easier to comprehend a graphic when all the required information is present in just one window).</p><p> </p><hr><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id438687"></a>5.2.2.2 Canvasses as display</h5></div></div></div><p>The colorful elements in canvasses can greatly enhance the clarity of your patches (cf. <a class="link" href="ch03s04.html#chapt3.4.2.4" title="3.4.2.4 Sampler-player">3.4.2.4</a>). For displaying functions, they can also be used in variable manner. For example, you could display the results of a random generator like this:</p><p>
-       <a class="ulink" href="patches/5-2-2-2-canvas-display.pd" target="_top">patches/5-2-2-2-canvas-display.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2a.jpg"></div></div><p>You could also display a number in a larger size (however, a symbol must always accompany the number; here, a "&gt;" is used):</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2b.jpg"></div></div><p>The possibilities are nearly endless; you could even produce complete graphic scores using canvasses.</p><p> </p><hr></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id438811"></a>5.2.2.3 Canvasses as expanded GUI</h5></div></div></div><p>Canvasses can be laid over other GUI objects; the order in which they are created is critical. You could make your own toggles:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2c.jpg"></div></div><p>First, a toggle with a size of 55 was created and attached to "sel 1". Then, a canvas with a size of 55 and a receive symbol "cx" was created and superimposed directly on top of the toggle (the order of creation is essential; otherwise, the canvas disappears behind the toggle). The "sel 1" object and all the rest could be separated into a subpatch and an internal "send" object for the toggle could be used.</p><p>Here again, the possibilities are endless. To name just one example, you could replace an octave of piano keys like this (clearly, I am not the most talented Pd graphic designer):</p><p>
-       <a class="ulink" href="patches/5-2-2-3-piano-display.pd" target="_top">patches/5-2-2-3-piano-display.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2d.jpg"></div></div><p>The subpatch contains:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2e.jpg"></div></div><p>Behind the 'piano keys' is a series of bangs:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-2f.jpg"></div></div><p> </p><hr></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id439020"></a>5.2.2.4 More exercises</h5></div></div></div><p>a) Create a stopwatch.</p><p>b) Create a graphic for a running 5/8 meter, i.e., a visual click track.</p><p> </p><p> </p><hr></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="chapt5.2.3"></a>5.2.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id439056"></a>5.2.3.1 Data structures</h4></div></div></div><p>Data structures are an entire family of graphics in Pd.</p><p>You can place graphic elements in a subpatch. First you create the subpatch "graphic" and define variables and a graphic for this subpatch. This is called a "template". It contains the variables with "struct"; for its argument, enter the template's name (here "g1") and then pairs comprising type and name - in this case, float x float y float q. "float" is the type (a decimal number); x, y, and q are freely chosen names.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3a.jpg"></div></div><p>The graphic can be defined with the objects "drawcurve", "drawpolygon", "filledcurve", and "filledpolygon". Let's use "filledpolygon" for our first example. A polygon is a geometric shape with many sides. The arguments from left to right are interior color, perimeter color, perimeter width, pairs of coordinate points (starting from upper left and proceeding clockwise).</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3b.jpg"></div></div><p>To create a graphic, we need "append". Its first argument is the template's name and then possible variables - x and y should always be used. The right input is the place in the subpatch where the graphic is to be placed. You have to imagine that graphic elements in a subpatch are ordered one after another as in a list. "append" must first know the place in the list that the "pointer" object has named. Give "pointer" the Message "traverse
-       pd-graphic"; this causes "pointer" to go to the beginning of the list. A "bang" message will send this place on the list (to "append"). Then give data for the variables into the "append" object's left inlet.</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures1.pd" target="_top">patches/5-2-3-1-data-structures1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3c.jpg"></div></div><p>Just for the sake of clarity: "x" and "y"
-      are special names for a graphic element used in data structures. It defines an absolute position, 50/50. You've now created a "filledpolygon" with the interior color 22, the perimeter color 12, the perimeter width 3, and with 4 points: upper left at a distance of 0/0 from the absolute position, upper right at a distance of 100/0 from the absolute position, lower right at 100/100, and lower left at 0/100. If you simply removed the last two numbers from "filledpolygon", you'd be left with a triangle. You can apply this same method to create a polygon with any number of sides.</p><p>"traverse pd-graphic" basically takes you right to the beginning of the subpatch "graphic"; a "bang" sends this position to "append" and, when we send it data with the necessary variables, "append" creates the graphic at this position.</p><p>But you could also change something about this graphic. You defined the variable "q" (a float) for the template "g1". Now enter the following for the "filledpolygon": "filledpolygon 22 12 3 0 0 q 0 100 100 0 100". One point has just one variable. The point disappears and you now have a triangle. This variable can be set using "append":</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures2.pd" target="_top">patches/5-2-3-1-data-structures2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3d.jpg"></div></div><p>...but also by using "set". This must also receive the information from the pointer regarding the position where something is to be changed in the subpatch. In this case, it is one step after the beginning. Use "traverse pd-graphic" to go all the way to the beginning. The beginning is empty; use "next" to go to the next graphic. Now you can enter a value for q in the left input.</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures3.pd" target="_top">patches/5-2-3-1-data-structures3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3e.jpg"></div></div><p>Many graphics can be made simply by sending messages to "append". Use "next" to move from one graphic to the next.</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures4.pd" target="_top">patches/5-2-3-1-data-structures4.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3f.jpg"></div></div><p>Regarding the other graphic elements: "drawpolygon" is just a line with angles; the first argument with the interior color is omitted. The same is true of "drawcurve", except that its angles are rounded. "filledcurve", however, results in a closed shape and the first argument is again reserved for the interior color.</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures5.pd" target="_top">patches/5-2-3-1-data-structures5.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3g.jpg"></div></div><p>Another important point: the points (vortices) of a graphic that have variables can be changed with the mouse; the cursor changes its shape at the point, meaning you can now click and drag to modify the graphic's shape.</p><p>If you use "append" to design a graphic object, the output is a new pointer for this new object (as with "next"):</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures6.pd" target="_top">patches/5-2-3-1-data-structures6.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3h.jpg"></div></div><p>A pointer is a type of information, e.g., for "trigger":</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures7.pd" target="_top">patches/5-2-3-1-data-structures7.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3i.jpg"></div></div><p>You can use "get" to receive information from graphic elements that are attached to pointers:</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures8.pd" target="_top">patches/5-2-3-1-data-structures8.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3j.jpg"></div></div><p>Last, you can create a (graphic) array using data structures. The array is defined in "struct" with a name and another allocated template. Use "plot" to define the color, width, starting point (x/y), and distance between points for this array.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3k.jpg"></div></div><p>Another subpatch must contain the other template that determines the array's variables:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3l.jpg"></div></div><p>The variable "y" is automatically understood as the height of the array. This variable is necessary to create the array correctly.</p><p>Here is the created array:</p><p>
-      <a class="ulink" href="patches/5-2-3-1-data-structures9.pd" target="_top">patches/5-2-3-1-data-structures9.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3m.jpg"></div></div><p>You can change the size with "setsize":</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3n.jpg"></div></div><p>The variable "y" has to be changed somewhat indirectly; use "element" to access it.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap5/5-2-3o.jpg"></div></div><p>The form of data structures may change in the future (date of writing: June 2008). Furthermore, additional special functions for data structures can be found in the original Pd documentation.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id439901"></a>5.2.4 For those especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id439908"></a>5.2.4.1 GEM</h4></div></div></div><p>As mentioned previously, there is an additional program for Pd called GEM that is used for video generation and editing.</p><p>
-      <a class="ulink" href="http://gem.iem.at" target="_top">http://gem.iem.at</a>
-     </p><p> </p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="co01.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Miscellaneous </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Afterword</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch05.html" title="Chapter 5. Miscellaneous">
+<link rel="prev" href="ch05.html" title="Chapter 5. Miscellaneous">
+<link rel="next" href="co01.html" title="Afterword">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">5.2 Visuals</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p" href="ch05.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 5. Miscellaneous</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="co01.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id438486"></a>5.2 Visuals
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id438493"></a>5.2.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id438499"></a>5.2.1.1 Pd is visual and this can be
+								programmed
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					The tools for visual representation were already introduced in <a
+						class="link" href="ch02s02.html#chapt2.2.4.3"
+						title="2.2.4.3 GUI options">2.2.4.3</a>. Here, we'll examine how
+					to control a canvas.
+				</p>
+				<p>
+					Create a canvas (<span class="strong"><strong>Put</strong></span> <span
+						class="strong"><strong>Canvas</strong></span>) and give it the
+					receive symbol "c1" under properties (right-click on the box in the
+					canvas's upper left):
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-1a.jpg">
+					</div>
+				</div>
+				<p>Now you can send the canvas messages:</p>
+				<p>
+					<a class="ulink" href="patches/5-2-1-1-canvas.pd" target="_top">patches/5-2-1-1-canvas.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-1b.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id438648"></a>5.2.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id438655"></a>5.2.2.1 Main patch window and subpatches
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					This should be clear from the previous material: a tidy patch
+					comprises the main window and subpatches (cf. <a class="link"
+						href="ch03s04.html#chapt3.4.2.4" title="3.4.2.4 Sampler-player">3.4.2.4</a>
+					and <a class="link" href="ch05.html#chapt5.1.1.1"
+						title="5.1.1.1 Subpatches">5.1.1.1</a>). In this manual, I've
+					usually refrained from this sort of organization for the sake of
+					clarity (it's easier to comprehend a graphic when all the required
+					information is present in just one window).
+				</p>
+				<p></p>
+				<hr>
+				<div class="sect4" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h5 class="title">
+									<a name="id438687"></a>5.2.2.2 Canvasses as display
+								</h5>
+							</div>
+						</div>
+					</div>
+					<p>
+						The colorful elements in canvasses can greatly enhance the clarity
+						of your patches (cf. <a class="link"
+							href="ch03s04.html#chapt3.4.2.4" title="3.4.2.4 Sampler-player">3.4.2.4</a>).
+						For displaying functions, they can also be used in variable
+						manner. For example, you could display the results of a random
+						generator like this:
+					</p>
+					<p>
+						<a class="ulink" href="patches/5-2-2-2-canvas-display.pd"
+							target="_top">patches/5-2-2-2-canvas-display.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2a.jpg">
+						</div>
+					</div>
+					<p>You could also display a number in a larger size (however, a
+						symbol must always accompany the number; here, a "&gt;" is used):</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2b.jpg">
+						</div>
+					</div>
+					<p>The possibilities are nearly endless; you could even produce
+						complete graphic scores using canvasses.</p>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect4" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h5 class="title">
+									<a name="id438811"></a>5.2.2.3 Canvasses as expanded GUI
+								</h5>
+							</div>
+						</div>
+					</div>
+					<p>Canvasses can be laid over other GUI objects; the order in
+						which they are created is critical. You could make your own
+						toggles:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2c.jpg">
+						</div>
+					</div>
+					<p>First, a toggle with a size of 55 was created and attached
+						to "sel 1". Then, a canvas with a size of 55 and a receive symbol
+						"cx" was created and superimposed directly on top of the toggle
+						(the order of creation is essential; otherwise, the canvas
+						disappears behind the toggle). The "sel 1" object and all the rest
+						could be separated into a subpatch and an internal "send" object
+						for the toggle could be used.</p>
+					<p>Here again, the possibilities are endless. To name just one
+						example, you could replace an octave of piano keys like this
+						(clearly, I am not the most talented Pd graphic designer):</p>
+					<p>
+						<a class="ulink" href="patches/5-2-2-3-piano-display.pd"
+							target="_top">patches/5-2-2-3-piano-display.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2d.jpg">
+						</div>
+					</div>
+					<p>The subpatch contains:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2e.jpg">
+						</div>
+					</div>
+					<p>Behind the 'piano keys' is a series of bangs:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap5/5-2-2f.jpg">
+						</div>
+					</div>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect4" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h5 class="title">
+									<a name="id439020"></a>5.2.2.4 More exercises
+								</h5>
+							</div>
+						</div>
+					</div>
+					<p>a) Create a stopwatch.</p>
+					<p>b) Create a graphic for a running 5/8 meter, i.e., a visual
+						click track.</p>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="chapt5.2.3"></a>5.2.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id439056"></a>5.2.3.1 Data structures
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Data structures are an entire family of graphics in Pd.</p>
+				<p>You can place graphic elements in a subpatch. First you
+					create the subpatch "graphic" and define variables and a graphic
+					for this subpatch. This is called a "template". It contains the
+					variables with "struct"; for its argument, enter the template's
+					name (here "g1") and then pairs comprising type and name - in this
+					case, float x float y float q. "float" is the type (a decimal
+					number); x, y, and q are freely chosen names.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3a.jpg">
+					</div>
+				</div>
+				<p>The graphic can be defined with the objects "drawcurve",
+					"drawpolygon", "filledcurve", and "filledpolygon". Let's use
+					"filledpolygon" for our first example. A polygon is a geometric
+					shape with many sides. The arguments from left to right are
+					interior color, perimeter color, perimeter width, pairs of
+					coordinate points (starting from upper left and proceeding
+					clockwise).</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3b.jpg">
+					</div>
+				</div>
+				<p>To create a graphic, we need "append". Its first argument is
+					the template's name and then possible variables - x and y should
+					always be used. The right input is the place in the subpatch where
+					the graphic is to be placed. You have to imagine that graphic
+					elements in a subpatch are ordered one after another as in a list.
+					"append" must first know the place in the list that the "pointer"
+					object has named. Give "pointer" the Message "traverse pd-graphic";
+					this causes "pointer" to go to the beginning of the list. A "bang"
+					message will send this place on the list (to "append"). Then give
+					data for the variables into the "append" object's left inlet.</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures1.pd"
+						target="_top">patches/5-2-3-1-data-structures1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3c.jpg">
+					</div>
+				</div>
+				<p>Just for the sake of clarity: "x" and "y" are special names
+					for a graphic element used in data structures. It defines an
+					absolute position, 50/50. You've now created a "filledpolygon" with
+					the interior color 22, the perimeter color 12, the perimeter width
+					3, and with 4 points: upper left at a distance of 0/0 from the
+					absolute position, upper right at a distance of 100/0 from the
+					absolute position, lower right at 100/100, and lower left at 0/100.
+					If you simply removed the last two numbers from "filledpolygon",
+					you'd be left with a triangle. You can apply this same method to
+					create a polygon with any number of sides.</p>
+				<p>"traverse pd-graphic" basically takes you right to the
+					beginning of the subpatch "graphic"; a "bang" sends this position
+					to "append" and, when we send it data with the necessary variables,
+					"append" creates the graphic at this position.</p>
+				<p>But you could also change something about this graphic. You
+					defined the variable "q" (a float) for the template "g1". Now enter
+					the following for the "filledpolygon": "filledpolygon 22 12 3 0 0 q
+					0 100 100 0 100". One point has just one variable. The point
+					disappears and you now have a triangle. This variable can be set
+					using "append":</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures2.pd"
+						target="_top">patches/5-2-3-1-data-structures2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3d.jpg">
+					</div>
+				</div>
+				<p>...but also by using "set". This must also receive the
+					information from the pointer regarding the position where something
+					is to be changed in the subpatch. In this case, it is one step
+					after the beginning. Use "traverse pd-graphic" to go all the way to
+					the beginning. The beginning is empty; use "next" to go to the next
+					graphic. Now you can enter a value for q in the left input.</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures3.pd"
+						target="_top">patches/5-2-3-1-data-structures3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3e.jpg">
+					</div>
+				</div>
+				<p>Many graphics can be made simply by sending messages to
+					"append". Use "next" to move from one graphic to the next.</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures4.pd"
+						target="_top">patches/5-2-3-1-data-structures4.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3f.jpg">
+					</div>
+				</div>
+				<p>Regarding the other graphic elements: "drawpolygon" is just a
+					line with angles; the first argument with the interior color is
+					omitted. The same is true of "drawcurve", except that its angles
+					are rounded. "filledcurve", however, results in a closed shape and
+					the first argument is again reserved for the interior color.</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures5.pd"
+						target="_top">patches/5-2-3-1-data-structures5.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3g.jpg">
+					</div>
+				</div>
+				<p>Another important point: the points (vortices) of a graphic
+					that have variables can be changed with the mouse; the cursor
+					changes its shape at the point, meaning you can now click and drag
+					to modify the graphic's shape.</p>
+				<p>If you use "append" to design a graphic object, the output is
+					a new pointer for this new object (as with "next"):</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures6.pd"
+						target="_top">patches/5-2-3-1-data-structures6.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3h.jpg">
+					</div>
+				</div>
+				<p>A pointer is a type of information, e.g., for "trigger":</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures7.pd"
+						target="_top">patches/5-2-3-1-data-structures7.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3i.jpg">
+					</div>
+				</div>
+				<p>You can use "get" to receive information from graphic
+					elements that are attached to pointers:</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures8.pd"
+						target="_top">patches/5-2-3-1-data-structures8.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3j.jpg">
+					</div>
+				</div>
+				<p>Last, you can create a (graphic) array using data structures.
+					The array is defined in "struct" with a name and another allocated
+					template. Use "plot" to define the color, width, starting point
+					(x/y), and distance between points for this array.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3k.jpg">
+					</div>
+				</div>
+				<p>Another subpatch must contain the other template that
+					determines the array's variables:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3l.jpg">
+					</div>
+				</div>
+				<p>The variable "y" is automatically understood as the height of
+					the array. This variable is necessary to create the array
+					correctly.</p>
+				<p>Here is the created array:</p>
+				<p>
+					<a class="ulink" href="patches/5-2-3-1-data-structures9.pd"
+						target="_top">patches/5-2-3-1-data-structures9.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3m.jpg">
+					</div>
+				</div>
+				<p>You can change the size with "setsize":</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3n.jpg">
+					</div>
+				</div>
+				<p>The variable "y" has to be changed somewhat indirectly; use
+					"element" to access it.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap5/5-2-3o.jpg">
+					</div>
+				</div>
+				<p>The form of data structures may change in the future (date of
+					writing: June 2008). Furthermore, additional special functions for
+					data structures can be found in the original Pd documentation.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id439901"></a>5.2.4 For those especially interested
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id439908"></a>5.2.4.1 GEM
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>As mentioned previously, there is an additional program for
+					Pd called GEM that is used for video generation and editing.</p>
+				<p>
+					<a class="ulink" href="http://gem.iem.at" target="_top">http://gem.iem.at</a>
+				</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p" href="ch05.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch05.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="co01.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">Chapter 5. Miscellaneous </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> Afterword</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

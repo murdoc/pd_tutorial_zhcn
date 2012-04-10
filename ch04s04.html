@@ -1,8 +1,149 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.4 Network</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>4.4 Network</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch04.html" title="Chapter 4. Controlling sound"><link rel="prev" href="ch04s03.html" title="4.3 HIDs"><link rel="next" href="ch05.html" title="Chapter 5. Miscellaneous"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.4 Network</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 4. Controlling sound</th><td width="20%" align="right"> <a accesskey="p" href="ch05.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id436722"></a>4.4 Network</h2></div></div></div><p>The following section deals with networking several computers that are to be used not only for sound processing, but also communication with other people at other computers in order to play a piece of music together.</p><p> </p><hr><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id436740"></a>4.4.1 Netsend / Netreceive</h3></div></div></div><p>A Pd patch on one computer can exchange data with a Pd patch on another computer.</p><p>First you connect the computers with a network cable, both of which are running Pd. Use "netsend" to connect your computer to another one. Enter the message "connect [name] [port number]"; instead of the name, you could also enter the IP address of the other computer. "disconnect" terminates the connection. </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-4-1a1.jpg"></div></div><p>Once connected, use "send" followed by the symbols you want to send, to send messages to the other computer. It receives this data using "netreceive [port number]".</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-4-1a2.jpg"></div></div><p> </p><p> </p><hr></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id436855"></a>4.4.2 OSC</h3></div></div></div><p>In Pd-extended, the OSC objects that are used by many other computer programs for data exchange are also available. OSC stands for <span class="emphasis"><em>open sound control</em></span>. They work almost exactly like "netsend" and "netreceive".</p><p>You have to be connected to another computer with a network cable and both must be running OSC. Use "sendOSC" (case-sensitive!) to connect to another computer. Give the message "connect" as well as the IP address and port number of the other computer. Terminate the connection using "disconnect". </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-4-1a.jpg"></div></div><p>Once connected, use "send" followed by the symbols you want to send, to send messages to the other computer (which also must be running OSC). The other computer receives the data using "dumpOSC" with the port of the sender as the argument.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap4/4-4-1b.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch05.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">4.3 HIDs </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 5. Miscellaneous</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch04.html" title="Chapter 4. Controlling sound">
+<link rel="prev" href="ch04s03.html" title="4.3 HIDs">
+<link rel="next" href="ch05.html" title="Chapter 5. Miscellaneous">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">4.4 Network</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p"
+					href="ch04s03.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 4. Controlling sound</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch05.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id436722"></a>4.4 Network
+					</h2>
+				</div>
+			</div>
+		</div>
+		<p>The following section deals with networking several computers
+			that are to be used not only for sound processing, but also
+			communication with other people at other computers in order to play a
+			piece of music together.</p>
+		<p></p>
+		<hr>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id436740"></a>4.4.1 Netsend / Netreceive
+						</h3>
+					</div>
+				</div>
+			</div>
+			<p>A Pd patch on one computer can exchange data with a Pd patch
+				on another computer.</p>
+			<p>First you connect the computers with a network cable, both of
+				which are running Pd. Use "netsend" to connect your computer to
+				another one. Enter the message "connect [name] [port number]";
+				instead of the name, you could also enter the IP address of the
+				other computer. "disconnect" terminates the connection.</p>
+			<div class="informalfigure">
+				<div class="mediaobject">
+					<img src="images/kap4/4-4-1a1.jpg">
+				</div>
+			</div>
+			<p>Once connected, use "send" followed by the symbols you want to
+				send, to send messages to the other computer. It receives this data
+				using "netreceive [port number]".</p>
+			<div class="informalfigure">
+				<div class="mediaobject">
+					<img src="images/kap4/4-4-1a2.jpg">
+				</div>
+			</div>
+			<p></p>
+			<p></p>
+			<hr>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id436855"></a>4.4.2 OSC
+						</h3>
+					</div>
+				</div>
+			</div>
+			<p>
+				In Pd-extended, the OSC objects that are used by many other computer
+				programs for data exchange are also available. OSC stands for <span
+					class="emphasis"><em>open sound control</em></span>. They work
+				almost exactly like "netsend" and "netreceive".
+			</p>
+			<p>You have to be connected to another computer with a network
+				cable and both must be running OSC. Use "sendOSC" (case-sensitive!)
+				to connect to another computer. Give the message "connect" as well
+				as the IP address and port number of the other computer. Terminate
+				the connection using "disconnect".</p>
+			<div class="informalfigure">
+				<div class="mediaobject">
+					<img src="images/kap4/4-4-1a.jpg">
+				</div>
+			</div>
+			<p>Once connected, use "send" followed by the symbols you want to
+				send, to send messages to the other computer (which also must be
+				running OSC). The other computer receives the data using "dumpOSC"
+				with the port of the sender as the argument.</p>
+			<div class="informalfigure">
+				<div class="mediaobject">
+					<img src="images/kap4/4-4-1b.jpg">
+				</div>
+			</div>
+			<p></p>
+			<p></p>
+			<hr>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p"
+					href="ch04s03.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch04.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch05.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">4.3 HIDs </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> Chapter 5. Miscellaneous</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,10 +1,114 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>1.2 Installing and setting up Pd</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.2 Installing and setting up Pd</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch01.html" title="Chapter 1. Introduction to Pd"><link rel="prev" href="ch01.html" title="Chapter 1. Introduction to Pd"><link rel="next" href="ch02.html" title="Chapter 2. Programming with Pd for the first time"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">1.2 Installing and setting up Pd</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch01.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 1. Introduction to Pd</th><td width="20%" align="right"> <a accesskey="p" href="ch02.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id408594"></a>1.2 Installing and setting up Pd</h2></div></div></div><p>Readers of this book should have Pd installed on their computer so they are able to try out the processes described. Without this simultaneous practical experience, this tutorial will be difficult to understand.</p><p>First you need a computer with at least 128 MB main memory, a 500 MHz processor and ca. 500 MB hard disk space (these are the absolute minimum requirements!). Pd works with the following operating systems: Linux, OS X, and Windows.</p><p>Then you need to download the newest version of Pd-extended from the Internet. Enter "Pd-extended" into an Internet search engine. Since the address for the download portal may change in the future, no link to the site will be provided here. Pd-extended is a version of the original software (also called "Pd vanilla") that has been expanded with numerous libraries. Most of the exercises described here work with the original version of Pd, but not all of them. The extra objects in Pd-extended make the program much more practical in general. This tutorial assumes Pd-extended 
-version 0.39 or higher.</p><p>Once Pd has been installed, we open it from the directory Pd/bin/. A window appears. This is the main control center, so to speak. Here you can test whether Pd is functioning properly: In the main menu, click on <span class="strong"><strong>Media</strong></span>  <span class="strong"><strong>Test Audio and
-     MIDI</strong></span>. Under "TEST SIGNAL", click first on the box next to "&#8211;40", then on the box next to "&#8211;20". You should hear a sine tone coming out of the computer's loudspeaker (A4). If you do not, then you need to adjust your hardware settings (under <span class="strong"><strong>Media</strong></span>  <span class="strong"><strong>Audio settings</strong></span>). More information regarding problems that arise at this stage cannot be given here. For help resolving any problems, please consult the "Pd-list", a forum of Pd users on the Internet. If a microphone is connected, the digits in at least the leftmost two boxes under "AUDIO INPUT" should change in response to sound picked up by the microphone. As long as the test tone is working, you can work with the program without a microphone. (By Chapter 3 at the latest, however, you will sometimes need a microphone.)</p><p> </p><p> </p><hr></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch01.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch01.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch02.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 1. Introduction to Pd </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 2. Programming with Pd for the first time</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch01.html" title="Chapter 1. Introduction to Pd">
+<link rel="prev" href="ch01.html" title="Chapter 1. Introduction to Pd">
+<link rel="next" href="ch02.html"
+	title="Chapter 2. Programming with Pd for the first time">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">1.2 Installing and setting up Pd</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p" href="ch01.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 1. Introduction to Pd</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch02.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id408594"></a>1.2 Installing and setting up Pd
+					</h2>
+				</div>
+			</div>
+		</div>
+		<p>Readers of this book should have Pd installed on their computer
+			so they are able to try out the processes described. Without this
+			simultaneous practical experience, this tutorial will be difficult to
+			understand.</p>
+		<p>First you need a computer with at least 128 MB main memory, a
+			500 MHz processor and ca. 500 MB hard disk space (these are the
+			absolute minimum requirements!). Pd works with the following
+			operating systems: Linux, OS X, and Windows.</p>
+		<p>Then you need to download the newest version of Pd-extended
+			from the Internet. Enter "Pd-extended" into an Internet search
+			engine. Since the address for the download portal may change in the
+			future, no link to the site will be provided here. Pd-extended is a
+			version of the original software (also called "Pd vanilla") that has
+			been expanded with numerous libraries. Most of the exercises
+			described here work with the original version of Pd, but not all of
+			them. The extra objects in Pd-extended make the program much more
+			practical in general. This tutorial assumes Pd-extended version 0.39
+			or higher.</p>
+		<p>
+			Once Pd has been installed, we open it from the directory Pd/bin/. A
+			window appears. This is the main control center, so to speak. Here
+			you can test whether Pd is functioning properly: In the main menu,
+			click on <span class="strong"><strong>Media</strong></span> <span
+				class="strong"><strong>Test Audio and MIDI</strong></span>. Under
+			"TEST SIGNAL", click first on the box next to "&#8211;40", then on
+			the box next to "&#8211;20". You should hear a sine tone coming out
+			of the computer's loudspeaker (A4). If you do not, then you need to
+			adjust your hardware settings (under <span class="strong"><strong>Media</strong></span>
+			<span class="strong"><strong>Audio settings</strong></span>). More
+			information regarding problems that arise at this stage cannot be
+			given here. For help resolving any problems, please consult the
+			"Pd-list", a forum of Pd users on the Internet. If a microphone is
+			connected, the digits in at least the leftmost two boxes under "AUDIO
+			INPUT" should change in response to sound picked up by the
+			microphone. As long as the test tone is working, you can work with
+			the program without a microphone. (By Chapter 3 at the latest,
+			however, you will sometimes need a microphone.)
+		</p>
+		<p></p>
+		<p></p>
+		<hr>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p" href="ch01.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch01.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch02.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">Chapter 1. Introduction
+					to Pd </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> Chapter 2. Programming
+					with Pd for the first time</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

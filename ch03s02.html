@@ -1,16 +1,377 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.2 Additive Synthesis</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.2 Additive Synthesis</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch03.html" title="Chapter 3. Audio"><link rel="prev" href="ch03.html" title="Chapter 3. Audio"><link rel="next" href="ch03s03.html" title="3.3 Subtractive synthesis"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2 Additive Synthesis</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 3. Audio</th><td width="20%" align="right"> <a accesskey="p" href="ch03s03.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="chapt3.2"></a>3.2 Additive Synthesis</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id422752"></a>3.2.1 Theory</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id422758"></a>3.2.1.1 The harmonic series</h4></div></div></div><p>The additive series of frequencies (i.e., the series that results from simply adding the same Hertz value repeatedly), which results in a string of intervals of decreasing size, is called the harmonic series:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-1-1-1p.jpg"></div></div><p>You can also derive the series by repeating an experiment devised by Pythagoras (ca. 570-510 BCE) in which a string is divided into various proportions:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2a.jpg"></div></div><p>The ratios describe the length of the two parts of the string in relation to each other.</p><p> When a string is bowed, it doesn't just vibrate as a whole, but also in every whole number proportion:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2b.jpg"><div class="caption">Here the ratios describe the length of the vibrating section in relation to the length of the entire string.</div></div></div><p>All of these partial vibrations (called 'partials' or 'harmonics') result in sound as well, so every sound made on a string is in fact already a chord!</p><p>The special thing about this chord is that all of its pitches melt together, at least when their relative volumes decrease as the pitches get higher. Every natural sound has overtones. Due to characteristics inherent to the human ear, we hear all of these pitches as just one tone. </p><p>In contrast, the upper partials themselves (i.e., the partials above the fundamental) do not have any overtones. An isolated sound without overtones does not exist in nature, but such a thing can be created using electronic means. These are called sine tones, a name that stems from the shape of their waveform:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2c.jpg"></div></div><p>Physicist Jean
-      Baptiste Joseph Fourier (1768-1830) discovered that every periodic sound can be represented using only sine tones (of different frequency, amplitude, and phase), the sum of which is then identical with the original. Such an analysis and the corresponding mathematical process is called a Fourier analysis and Fourier transformation.</p><p>Using this principle, it is possible to create every periodic sound by layering many sine tones, a process called "additive synthesis".</p><p>In Pd, as already mentioned, "osc~" can be used to generate a sine tone. Sine tones are a very characteristic sound of electronic music, as they are produced and can only be produced using electronic means.</p><p>Using a number of "osc~" objects, whose frequencies form an additive series, you can create a chord based on the overtone series:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2d.jpg"></div></div><p>Typically, amplitudes become smaller as the frequencies get larger in order for the chord to blend better (though for some instruments, it is characteristic for certain partials to be louder than those on either side of them, e.g., the clarinet). The arrangement and relative volumes of overtones determine a sound's <span class="emphasis"><em>color</em></span>. You can also speak of its <span class="emphasis"><em>spectrum</em></span>.</p><p>The fact that our ears blend the overtones together becomes clear when you change the fundamental frequency:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2e.jpg"><div class="caption">We'll just use the first eight partials here. (N.B. The term 'partial' includes the fundamental whereas the term 'overtone' does not. In other words, the 1st partial = the fundamental frequency, 2nd partial = 1st overtone, 3rd partial = 2nd overtone, etc.)</div></div></div><p>Even if you leave out the lower partials, you hear the fundamental frequency as the fundamental when you change it:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2f.jpg"></div></div><p>Our brain calculates the fundamental based on the remaining spectrum. This non-existent tone is called a <span class="emphasis"><em>residual tone</em></span>.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id423178"></a>3.2.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423184"></a>3.2.2.1 A random klangfarbe (German: sound color)</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-2-2-1-random-color.pd" target="_top">patches/3-2-2-1-random-color.pd</a>
-     </p><p>For the sake of space, this example has been limited to just the first seven partials:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2g.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423249"></a>3.2.2.2 Changing one klangfarbe into another</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-2-2-2-colorchange.pd" target="_top">patches/3-2-2-2-colorchange.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2h.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423309"></a>3.2.2.3 Natural vs. equal-tempered</h4></div></div></div><p>
-Let's look at the difference between natural and equal-tempered intervals (first enter the fundamental frequency!):</p><p>
-      <a class="ulink" href="patches/3-2-2-3-natural-tempered.pd" target="_top">patches/3-2-2-3-natural-tempered.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2i.jpg"></div></div><p>Showing the difference between natural and equal-tempered tuning in cents (hundredths of a half-step):</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-2j.jpg"><div class="caption">You can see here: the 7th partial is 31 cents flatter than the equal-tempered seventh.</div></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423425"></a>3.2.2.4 More exercises</h4></div></div></div><p>Create an overtone chord with manipulated overtones, i.e., with imprecise overtones.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id423446"></a>3.2.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt3.2.3.1"></a>3.2.3.1 Pd's limitations</h4></div></div></div><p>The previous example of random klangfarbe reveals one of Pd's limitations: you can't randomly determine the number of oscillators. You have to at least determine the maximum first.</p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id423470"></a>3.2.4 For those especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423477"></a>3.2.4.1 Studie II</h4></div></div></div><p>One of the pioneering pieces in the history of electronic music is 'Studie II' by Karlheinz Stockhausen, written in 1954. This work uses only sine tones and mixtures thereof in non-tempered intervals. The author strongly recommends you analyze this piece!</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id423497"></a>3.2.4.2 Composing with spectra</h4></div></div></div><p>In the fourth chapter of his book "Audible Design", composer and theorist Trevor Wishart describes many possibilities for composing with spectra.</p><p> </p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch03s03.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 3. Audio </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.3 Subtractive synthesis</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch03.html" title="Chapter 3. Audio">
+<link rel="prev" href="ch03.html" title="Chapter 3. Audio">
+<link rel="next" href="ch03s03.html" title="3.3 Subtractive synthesis">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">3.2 Additive Synthesis</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p" href="ch03.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 3. Audio</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch03s03.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="chapt3.2"></a>3.2 Additive Synthesis
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id422752"></a>3.2.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id422758"></a>3.2.1.1 The harmonic series
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>The additive series of frequencies (i.e., the series that
+					results from simply adding the same Hertz value repeatedly), which
+					results in a string of intervals of decreasing size, is called the
+					harmonic series:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-1-1-1p.jpg">
+					</div>
+				</div>
+				<p>You can also derive the series by repeating an experiment
+					devised by Pythagoras (ca. 570-510 BCE) in which a string is
+					divided into various proportions:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2a.jpg">
+					</div>
+				</div>
+				<p>The ratios describe the length of the two parts of the string
+					in relation to each other.</p>
+				<p>When a string is bowed, it doesn't just vibrate as a whole,
+					but also in every whole number proportion:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2b.jpg">
+						<div class="caption">Here the ratios describe the length of
+							the vibrating section in relation to the length of the entire
+							string.</div>
+					</div>
+				</div>
+				<p>All of these partial vibrations (called 'partials' or
+					'harmonics') result in sound as well, so every sound made on a
+					string is in fact already a chord!</p>
+				<p>The special thing about this chord is that all of its pitches
+					melt together, at least when their relative volumes decrease as the
+					pitches get higher. Every natural sound has overtones. Due to
+					characteristics inherent to the human ear, we hear all of these
+					pitches as just one tone. </p>
+				<p>In contrast, the upper partials themselves (i.e., the
+					partials above the fundamental) do not have any overtones. An
+					isolated sound without overtones does not exist in nature, but such
+					a thing can be created using electronic means. These are called
+					sine tones, a name that stems from the shape of their waveform:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2c.jpg">
+					</div>
+				</div>
+				<p>Physicist Jean Baptiste Joseph Fourier (1768-1830) discovered
+					that every periodic sound can be represented using only sine tones
+					(of different frequency, amplitude, and phase), the sum of which is
+					then identical with the original. Such an analysis and the
+					corresponding mathematical process is called a Fourier analysis and
+					Fourier transformation.</p>
+				<p>Using this principle, it is possible to create every periodic
+					sound by layering many sine tones, a process called "additive
+					synthesis".</p>
+				<p>In Pd, as already mentioned, "osc~" can be used to generate a
+					sine tone. Sine tones are a very characteristic sound of electronic
+					music, as they are produced and can only be produced using
+					electronic means.</p>
+				<p>Using a number of "osc~" objects, whose frequencies form an
+					additive series, you can create a chord based on the overtone
+					series:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2d.jpg">
+					</div>
+				</div>
+				<p>
+					Typically, amplitudes become smaller as the frequencies get larger
+					in order for the chord to blend better (though for some
+					instruments, it is characteristic for certain partials to be louder
+					than those on either side of them, e.g., the clarinet). The
+					arrangement and relative volumes of overtones determine a sound's <span
+						class="emphasis"><em>color</em></span>. You can also speak of its
+					<span class="emphasis"><em>spectrum</em></span>.
+				</p>
+				<p>The fact that our ears blend the overtones together becomes
+					clear when you change the fundamental frequency:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2e.jpg">
+						<div class="caption">We'll just use the first eight partials
+							here. (N.B. The term 'partial' includes the fundamental whereas
+							the term 'overtone' does not. In other words, the 1st partial =
+							the fundamental frequency, 2nd partial = 1st overtone, 3rd
+							partial = 2nd overtone, etc.)</div>
+					</div>
+				</div>
+				<p>Even if you leave out the lower partials, you hear the
+					fundamental frequency as the fundamental when you change it:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2f.jpg">
+					</div>
+				</div>
+				<p>
+					Our brain calculates the fundamental based on the remaining
+					spectrum. This non-existent tone is called a <span class="emphasis"><em>residual
+							tone</em></span>.
+				</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id423178"></a>3.2.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423184"></a>3.2.2.1 A random klangfarbe (German:
+								sound color)
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-2-2-1-random-color.pd"
+						target="_top">patches/3-2-2-1-random-color.pd</a>
+				</p>
+				<p>For the sake of space, this example has been limited to just
+					the first seven partials:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2g.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423249"></a>3.2.2.2 Changing one klangfarbe into
+								another
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-2-2-2-colorchange.pd"
+						target="_top">patches/3-2-2-2-colorchange.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2h.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423309"></a>3.2.2.3 Natural vs. equal-tempered
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Let's look at the difference between natural and
+					equal-tempered intervals (first enter the fundamental frequency!):</p>
+				<p>
+					<a class="ulink" href="patches/3-2-2-3-natural-tempered.pd"
+						target="_top">patches/3-2-2-3-natural-tempered.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2i.jpg">
+					</div>
+				</div>
+				<p>Showing the difference between natural and equal-tempered
+					tuning in cents (hundredths of a half-step):</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-2j.jpg">
+						<div class="caption">You can see here: the 7th partial is 31
+							cents flatter than the equal-tempered seventh.</div>
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423425"></a>3.2.2.4 More exercises
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Create an overtone chord with manipulated overtones, i.e.,
+					with imprecise overtones.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id423446"></a>3.2.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="chapt3.2.3.1"></a>3.2.3.1 Pd's limitations
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>The previous example of random klangfarbe reveals one of Pd's
+					limitations: you can't randomly determine the number of
+					oscillators. You have to at least determine the maximum first.</p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id423470"></a>3.2.4 For those especially interested
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423477"></a>3.2.4.1 Studie II
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>One of the pioneering pieces in the history of electronic
+					music is 'Studie II' by Karlheinz Stockhausen, written in 1954.
+					This work uses only sine tones and mixtures thereof in non-tempered
+					intervals. The author strongly recommends you analyze this piece!</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id423497"></a>3.2.4.2 Composing with spectra
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>In the fourth chapter of his book "Audible Design", composer
+					and theorist Trevor Wishart describes many possibilities for
+					composing with spectra.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p" href="ch03.html"><img
+						src="images/prev.png" width="41" height="20" title="previous"
+						alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch03.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch03s03.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">Chapter 3. Audio </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 3.3 Subtractive
+					synthesis</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

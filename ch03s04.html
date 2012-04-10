@@ -1,71 +1,1329 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.4 Sampling</title>
-<link rel="stylesheet" type="text/css"
-href="style.css" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.4 Sampling</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <!--[if lt IE 8]>
  <link rel="stylesheet" type="text/css"
  href="style_ie55.css" />
  <![endif]-->
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.1"><link rel="start" href="index.html" title="Programming Electronic Music in Pd"><link rel="up" href="ch03.html" title="Chapter 3. Audio"><link rel="prev" href="ch03s03.html" title="3.3 Subtractive synthesis"><link rel="next" href="ch03s05.html" title="3.5 Wave shaping"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.4 Sampling</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><th width="60%" align="center">Chapter 3. Audio</th><td width="20%" align="right"> <a accesskey="p" href="ch03s05.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id424582"></a>3.4 Sampling</h2></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id424588"></a>3.4.1 Theory</h3></div></div></div><p>Let's clear up a potentially problematic issue to avoid any confusion: you've already learned that a sample is the smallest unit used for measuring and generating sound in a computer. The word 'sample' unfortunately also has another, quite different meaning in electronic music; it means a smallish section (usually a couple seconds long) of recorded sound. This chapter deals with the processing of short recorded bits of sound. First you'll have to learn how "array" works in Pd, which requires a fair amount of explanation.</p><p> </p><hr><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id424610"></a>3.4.1.1 Storing sound</h4></div></div></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id424616"></a>3.4.1.1.1 Sound files</h5></div></div></div><p>There are various locations in the computer where files can be saved: main memory or hard disks. Access to main memory is very fast in comparison to the hard disk; however, it has much less available space.</p><p>In Pd you can save sound to both locations. Saving to the hard disk means that you are saving a fixed sound file. WAV or AIFF formats are typically used. Use the "writesf~" object to write a sound file to disk. The argument is the number of channels; this creates a corresponding number of inlets to which you attach the sounds you want to record. First you have to use the message "open [name]" to choose the name of the file you want to create. Start recording using "start" and stop it using "stop".</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4a.jpg"></div></div><p> </p><hr></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id424676"></a>3.4.1.1.2 Buffers</h5></div></div></div><p>The other possible location is the main memory. Create one place for one sound using "array" (<span class="strong"><strong>Put </strong></span> <span class="strong"><strong>Array</strong></span> then click "ok"). It is also a visualization of the sound.</p><p>Let's first think of an array simply as storage for numbers. An array has a limited number of storage places. You can set this number using by right-clicking the array and going to "Properties". This opens two windows: one labeled "array" and the other labeled "canvas". In the "array" window, you can set the size. This number means the number of storage places. One number can be stored in each storage place.</p><p>You can allocate these cells using "tabwrite". The right argument determines the position; the left determines the value you want to save (as always: from right to left). In the array, the x-axis shows position and the y-axis shows the value:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4b.jpg"></div></div><p>You can use "array" to represent functions:</p><p>
-       <a class="ulink" href="patches/3-4-1-1-2-function1.pd" target="_top">patches/3-4-1-1-2-function1.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4c.jpg"></div></div><p>Or without temporal stretching (if the example shown causes a stack overflow, inserting "del 0" between "spigot" and "f" will help):</p><p>
-       <a class="ulink" href="patches/3-4-1-1-2-function2.pd" target="_top">patches/3-4-1-1-2-function2.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4d.jpg"></div></div><p>You could also draw in the array itself with the mouse, 'by hand' so to speak. If you move the mouse to a value in the array, the cursor (shaped like an arrow) will change its direction and you can draw by moving the mouse with the mouse button held.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4e.jpg"></div></div><p>Under 'Properties' (right-click on the array), you can set the following:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4f.jpg"></div></div><div class="itemizedlist"><p class="title"><b>In the "array" window:</b></p><ul type="square"><li style="list-style-type: square"><p>Name: Like all names in Pd, use alphanumeric characters without spaces, not only numbers.</p></li><li style="list-style-type: square"><p>Size: As described above.</p></li><li style="list-style-type: square"><p>"save contents": When checked, all values in an array will be saved. If you use large arrays or a large number of arrays, this could cause your patch to load very slowly.</p></li><li style="list-style-type: square"><p>"draw as points" / "polygon" /
-         "bezier curve": Different kinds of visualization.</p></li><li style="list-style-type: square"><p>"delete me": When checked, this deletes the array! The empty box remains, however, and must also be deleted.</p></li><li style="list-style-type: square"><p>"view list": This displays all values in a list.</p></li></ul></div><div class="itemizedlist"><p class="title"><b>In the "canvas" window:</b></p><ul type="square"><li style="list-style-type: square"><p>"graph on parent": This will be discussed later in <a class="link" href="ch03.html#chapt3.1.1.2" title="3.1.1.2 Applications">3.1.1.2</a>.</p></li><li style="list-style-type: square"><p>X range: You can set the range for the x-axis here.</p></li><li style="list-style-type: square"><p>Y range: You can set the range for the y-axis here. Values that fall outside this range will also be saved, but this will enlarge the entire window so that these values can be seen.</p></li><li style="list-style-type: square"><p>"size": Visual size in the patch.</p></li></ul></div><p>An array can also receive messages and "sends".</p><p>Renaming:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4g.jpg"></div></div><p>Making all values equal:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4h.jpg"></div></div><p>Changing the size:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4i.jpg"></div></div><p>The size can also be printed out:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4k.jpg"></div></div><p>Writing the contents to a text file:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4l.jpg"></div></div><p>Reading a text file:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4m.jpg"></div></div><p>You can also enter values like this. The first number determines which storage place to start with; all other values are for the positions thereafter:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4n.jpg"></div></div><p>You can also create hash marks on the axes and label them:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4o.jpg"><div class="caption">The first argument is the starting position; the second is the distance between the lines; the third is the distance between the longer lines.</div></div></div><p>You can also number them:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4p.jpg"></div></div><p>First, the position is labeled; second, the numbers you want to display.</p><p>N.B.: Lines and labels are not stored in the patch, so you have to reenter them every time you open the patch.</p><p>You can, of course, also store sound in an array. For a computer, sound is - as has been often mentioned - nothing but a string of numbers, 44100 numbers to be precise. You could store one second of sound in an array; you'd just need to use 44100 storage places. Here's where the "tabwrite~" object comes into play. It receives the sound input and otherwise just a bang. Unlike with "tabwrite" (without a tilde) where you entered the storage place in the right inlet 'by hand' and the corresponding value on the left, when "tabwrite~" receives a "bang", it automatically starts with the first storage place and then proceeds at sample speed (44100 samples/sec). At the same time, every place is allocated a value received by the left inlet from the current sound, resulting in a total of 44100 stored numbers. Any sound that follows is not stored. If you want to stop prematurely, you can send a "stop" message.</p><p>
-       <a class="ulink" href="patches/3-4-1-1-2-normalize.pd" target="_top">patches/3-4-1-1-2-normalize.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4q.jpg"></div></div><p>If "tabwrite~" receives a float message, this number is interpreted as a sample offset. In other words, the sample that corresponds to this float number will be the starting point for the array.</p><p>One useful function is that it's possible to raise the overall volume after the fact. If, for example, the original recording is too quiet (i.e., the membrane of the microphone didn't vibrate especially strongly, which resulted in fairly small values), you can amplify it. This is called "normalizing". For this, you can use the following message:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4r.jpg"></div></div><p>You can also make a connection between sound files located in the main memory and those located on the hard disk in array. This is achieved with the "soundfiler" object. This object allows you to load a sound file stored on the hard disk into an array, or to save the contents of an array on the hard disk as a sound file. The command  "read" is used to load a sound file. The arguments for the command are the name of the file (with the path if necessary) and then the name of the array to which you want to write.</p><p>
-       <a class="ulink" href="patches/3-4-1-1-2-load-soundfile.pd" target="_top">patches/3-4-1-1-2-load-soundfile.pd</a>
-      </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4s.jpg"></div></div><p>Once the file has successfully loaded, the size of the sound file in samples will be sent out the "soundfiler" object's outlet.</p><p> You can also include other commands (called "flags") in the message:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4t.jpg"></div></div><p>The resize command changes the array's size to match that of the sample (this is limited to 4000000 samples - about 90 seconds, though this can be changed with "maxsize").</p><p>Conversely, the command "write" saves the contents of an array as a sound file to the hard disk. In this case, the format (WAV or AIFF) must be given as a flag, then the name (with path designation if necessary) of the file you want to create, and then the name of the array.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4u.jpg"></div></div><div class="itemizedlist"><p class="title"><b>Other important "flags" in this context are:</b></p><ul type="square"><li style="list-style-type: square"><p>normalize: Optimizes a file's amplitude levels, as explained previously.</p></li><li style="list-style-type: square"><p>rate: Used to set the sample rate for a file.</p></li></ul></div><p>As an alternative to array, you could also use "table". Create a "table" object; enter the name for the first argument and the size in samples for the second. This will create an array in a subpatch (click on the object in execute mode) that is treated like a normal array. This approach has the following advantage: the graphics for a normal array can be very complex. You can notice this when you move a big array around on the canvas: it moves very slowly. But if the graphic representation of an array is in a subpatch, the object itself can be moved much more easily.</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4v.jpg"></div></div><p> </p><p> </p><hr></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id425813"></a>3.4.1.2 Playback of saved sound</h4></div></div></div><p>Sound files that are on an external storage device like a hard disk can be read - that is, played back - in Pd with "readsf~". As with "writesf~", you use the messages "start" and "stop" (you could also use "1" and "0"). Enter the number of channels as the argument. The rightmost output sends a bang when the end of a file is reached.</p><p>
-      <a class="ulink" href="patches/3-4-1-2-play-file.pd" target="_top">patches/3-4-1-2-play-file.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4w.jpg"></div></div><p>Let's look at the control level for 'array': let's say you have an array with 10 storage places. You can use "tabread" to read every one of these places:</p><p>
-      <a class="ulink" href="patches/3-4-1-2-read-array1.pd" target="_top">patches/3-4-1-2-read-array1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4y.jpg"></div></div><p>The principle is basically the same for signals, except that you have to receive the saved values at a rate of 44100 numbers per second. That's why there is "tabread~". If you want to, say, play a sound stored in an array that lasts 1.5 seconds (= 66150 samples), you have to read the array values from 0 to 66149 at a rate of 44100 values a second. You can do this with "line~":</p><p>
-      <a class="ulink" href="patches/3-4-1-2-read-array2.pd" target="_top">patches/3-4-1-2-read-array2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z1.jpg"><div class="caption"><p>"tabread~" receives the array name as an argument. You could also set the array you want to read with the message "set [arrayname]".</p></div></div></div><p>Now you can start to play with these values. For example, you could play it back in twice the time:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z2.jpg"></div></div><p>This cuts the playback speed in half. This causes everything to sound an octave lower because the time stretching makes all the soundwaves twice as long, which means their frequencies will be cut in half and thus sound an octave lower.</p><p>This leads the problem that every single sample you use needs to be played twice or else there will be gaps. To avoid this problem, there is a modified form of the
-      "tabread~" object called "tabread4~", which interpolates intermediate values that it generates using information from the values that ultimately precede and follow it. (More specific information on this function is available at <a class="link" href="ch03s04.html#chapt3.4.4" title="3.4.4 For especially interested">3.4.4</a>.) In most cases, "tabread4~" is more suitable for reading arrays. This requires a readout spectrum from 1 to n - 2, where 'n' is the size of the array you want to read.</p><p>Of course, you could also play something back faster, which would raise the frequency:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z3.jpg"></div></div><p>Later, when granular synthesis is explained, you'll learn how to alter tempo and pitch independently.</p><p>Playing a sample backwards is naturally also a possibility:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z5.jpg"></div></div><p>You could also use the "phasor~" object:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z4.jpg"></div></div><p>"phasor~" generates a series of numbers between 0 and 1 as a signal. If you multiply these values by 66148, you get a series of numbers from 0 to 66148. Enter 0.75 for the frequency so that the series occurs in exactly 1.5 seconds.</p><p>Another possibility would be to create your own array for the arrangement of the readout and use it to play back the first array:</p><p>
-      <a class="ulink" href="patches/3-4-1-2-read-array3.pd" target="_top">patches/3-4-1-2-read-array3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z6.jpg"></div></div><p>Or you could use an array to control the amplitude:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z7.jpg"></div></div><p>Or to control the frequency:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z8.jpg"></div></div><p>Once again you can see: we're using only numbers to control various parameters.</p><p>You can use as many "tabread~" objects as you like to read from the same array. However, you should never use two arrays with the same name, as it will almost certainly lead to errors.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id426355"></a>3.4.1.3 Audio delay</h4></div></div></div><p>In Chapter <a class="link" href="ch02s02.html#chapt2.2.3.1.2" title="2.2.3.1.2 Delay">2.2.3.1.2</a> we mentioned how numbers or series of numbers can be delayed. You can also do this with signals. This is done by creating a buffer into which signals are written and out of which signals are read following a certain delay. To create this buffer, you use a "delwrite~" object. The first argument is a freely chosen name; the second is the size in milliseconds. As input, give it the signal you want it to write in the buffer. Once the buffer is full, it is written over again from the beginning. If the buffer is 1000 milliseconds long, the last 1000 milliseconds of the incoming signal are stored in the buffer.</p><p>Use "delread~" to read from the buffer. The first argument is again the buffer name; the second is the delay (in milliseconds; can be changed using a control data entry in the input):</p><p>
-      <a class="ulink" href="patches/3-4-1-3-delay.pd" target="_top">patches/3-4-1-3-delay.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z9.jpg"></div></div><p>Logically the amount of delay in "delread~" must be smaller than or equal to the buffer size. If you have a delay of 2000 milliseconds but the buffer holds only 1000 milliseconds, it clearly won't work. Using a negative number for the delay interval is also impossible, as even Pd can't see into the future. You can use as many "delread~" objects as you like to read simultaneously from a delay buffer. You cannot look into the wave patterns in the buffer.</p><p>While you can change the delay interval in "delread~", you have to use a control data entry and there is a certain probability of error once you exceed a certain speed (this is again a conflict between control data and signals). For this reason, there is a special object for variable readings of delay buffers called "vd~" (short for
-      "variable delay"). You give the delay interval (in milliseconds) as a signal as input and can change it however you like (though, again, you can't use negative numbers or exceed the buffer size):</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z10.jpg"></div></div><p>"vd~", like "readsf4~", creates an interpolation.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id426491"></a>3.4.2 Applications</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id426497"></a>3.4.2.1 A simple sampler</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-4-2-1-simple-sampler.pd" target="_top">patches/3-4-2-1-simple-sampler.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z11.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id426555"></a>3.4.2.2 With variable speed</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-4-2-2-sampler2.pd" target="_top">patches/3-4-2-2-sampler2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z12.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id426612"></a>3.4.2.3 Any position</h4></div></div></div><p>Here's one way to pick out any position from a sample that you want:</p><p>
-      <a class="ulink" href="patches/3-4-2-3-sampler3.pd" target="_top">patches/3-4-2-3-sampler3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z13.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt3.4.2.4"></a>3.4.2.4 Sampler-player</h4></div></div></div><p>If you change the graphic representation as described previously (<a class="link" href="ch02s02.html#chapt2.2.4" title="2.2.4 Miscellaneous">2.2.4</a>), then your patch could look like this:</p><p>
-      <a class="ulink" href="patches/3-4-2-4-sampler-big.pd" target="_top">patches/3-4-2-4-sampler-big.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z14.jpg"></div></div><p>Four canvas objects make up the colorful background of the sliders and array. N.B.: The graphics that were created last always appear on top of the other ones. Let's say you have "array1" and then you make a colored canvas object; you have to create "array1" once again (just copy and then delete the old one) so that it appears on top of the canvas object.</p><p>To explain exactly how this was done:</p><div class="informalfigure"><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="839"><tr><td><img src="images/kap3/3-4z15.jpg" width="839"></td></tr></table></div></div><p>And in the subpatch:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z16.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id426839"></a>3.4.2.5 Loop generator</h4></div></div></div><p>
-      <a class="ulink" href="patches/3-4-2-5-loop-generator1.pd" target="_top">patches/3-4-2-5-loop-generator1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="613"><tr><td><img src="images/kap3/3-4z17.jpg" width="613"></td></tr></table></div></div><p>But with this loop generator, clicks occur. First, it is highly recommended that you put the array in a subpatch, because the graphic requires a lot of processing power. Second, on the loop's ends you should briefly go to 0 so that there is no sudden jump in value (which would cause a click). For this, you need to program "windowing". In sync with the readout of the array, this is determined in the amplitude by another array (here, "crown") that controls the dynamic envelope. This envelope has a value of zero at the beginning and end to ensure that there is no sudden change to the value when the loop repeats. Instead of the "crown" window, you could also use a "Hanning" window, which uses a part of the sine function (this will be covered later). Of course, the "crown" array should also be in another window as well, but it has been left this way for the sake of clarity.</p><div class="informalfigure"><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="628"><tr><td><img src="images/kap3/3-4z18.jpg" width="628"></td></tr></table></div></div><p>A simpler version of the loop can be created using feedback:</p><p>
-      <a class="ulink" href="patches/3-4-2-5-loop-generator2.pd" target="_top">patches/3-4-2-5-loop-generator2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z19.jpg"></div></div><p>A drawback to this is that there is a maximum loop duration; here it is 10000 milliseconds.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427013"></a>3.4.2.6 Reverb</h4></div></div></div><p>You can simulate a "reverb" effect if the signal feedback gets quieter and quieter:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z20.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427067"></a>3.4.2.7 Texture</h4></div></div></div><p>Or you can create a texture:</p><p>
-      <a class="ulink" href="patches/3-4-2-7-texture.pd" target="_top">patches/3-4-2-7-texture.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z21.jpg"></div></div><p>You have to be careful that the feedback doesn't 'explode', i.e., that its volume doesn't increase exponentially.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427134"></a>3.4.2.8 Comb filter</h4></div></div></div><p>You can build a comb filter using audio delay. The idea is that you add the delay to the original signal. This results in amplifications and cancellations at regular intervals, which gives the spectrum the appearance of a comb:</p><p>
-      <a class="ulink" href="patches/3-4-2-8-combfilter.pd" target="_top">patches/3-4-2-8-combfilter.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z22.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt3.4.2.9"></a>3.4.2.9 Octave doubler</h4></div></div></div><p>If you know the frequency of a signal's fundamental, you can construct an octave doubler as follows: Let's take a wave...</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z23.jpg"></div></div><p>...and this signal delayed by half the length of one period...</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z24.jpg"></div></div><p>...adding them together gives you 0 (= cancellation). If you delay a periodic signal by the half the duration of one period and add it to the original, the fundamental tone (and all odd partials) is cancelled out. That would look like this:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z25.jpg"></div></div><p>But it doesn't quite work like that. You have to remember that Pd processes all audio data in blocks of 64 samples (unless you change the setting), because it is more efficient than individually processing each sample (cf. <a class="link" href="ch03.html#chapt3.1.1.3.2" title="3.1.1.3.2 DSP">3.1.1.3.2</a>). With the above patch, you'd get a delay of 1,136 milliseconds, or 50 samples. You could alleviate this problem by using a buffer with a one-block delay (64 samples = 1,451 ms) to read the original; the same goes for the delay offset:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z26.jpg"></div></div><p>
-      <a class="ulink" href="patches/3-4-2-9-oktavedoubler.pd" target="_top">patches/3-4-2-9-oktavedoubler.pd</a>
-     </p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="chapt3.4.2.10"></a>3.4.2.10 Karplus-Strong algorithm</h4></div></div></div><p>A special use of looping is the Karplus-Strong algorithm. It is one of the first examples of physical modeling synthesis, a process that attempts to replicate what occurs when a physical material vibrates. In our example, the physical model is a plucked string. When it is plucked, a string first vibrates chaotically then adjusts itself to the length of the string. It also loses energy, i.e., the vibration dies away. This can be reconstructed mathematically by taking an excerpt of white noise and playing it back periodically again and again by writing it to and reading it from a buffer:</p><p>
-      <a class="ulink" href="patches/3-4-2-10-karplus-strong1.pd" target="_top">patches/3-4-2-10-karplus-strong1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z33.jpg"></div></div><p>The string effect can be enhanced if the material you start with vibrates more and more 'softly'. This works with by calculating the average: the average of every two samples is taken and this result is written to the buffer in place of the original values. The vibration becomes less and less 'angular'. Use the object "z~" (Pd-extended) to set the delay to one sample; enter the number of samples as the argument:</p><p>
-      <a class="ulink" href="patches/3-4-2-10-karplus-strong2.pd" target="_top">patches/3-4-2-10-karplus-strong2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z34.jpg"></div></div><p>The tone is different every time. This is because "noise~" produces random numbers, which are naturally different every time. We could add the calculation for the resulting frequencies:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z35.jpg"></div></div><p>
-      <a class="ulink" href="patches/3-4-2-10-karplus-strong3.pd" target="_top">patches/3-4-2-10-karplus-strong3.pd</a>
-     </p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427592"></a>3.4.2.11 More exercises</h4></div></div></div><p>a) Build a record function into the sample player.</p><p>b) Create a patch for reverb or a texture with different delay times for the input signal, e.g., with multiples of the Fibonacci series (in which the next number is always the sum of the previous two: 0 1 1 2 3 5 8 13).</p><p>c) Use different Karplus-Strong sounds to make textures of varying densities.</p><p>d) Apply a comb filter to patches presented in the previous sections.</p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id427629"></a>3.4.3 Appendix</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427636"></a>3.4.3.1 Array oscillator</h4></div></div></div><p>One way to simplify the combination of "tabread~" and a multiplied "phasor~" signal is "tabosc4~". This reads out an array for the frequency you enter. One limitation of this method is that the size of the array must be a power of two (e.g., 128, 512, 1024) plus three points (here, 1027 = 1024 + 3).</p><p>
-      <a class="ulink" href="patches/3-4-3-1-arrayoscillator.pd" target="_top">patches/3-4-3-1-arrayoscillator.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z27.jpg"></div></div><p>This touches on "wave shaping", a topic that will be further explained in <a class="link" href="ch03s05.html" title="3.5 Wave shaping">chapter 3.5</a>. You can draw any wave into an array using the mouse.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427715"></a>3.4.3.2 Array playback</h4></div></div></div><p>Yet another simplification is "tabplay~"; it simply plays an array back at the original speed (when banged). Conveniently, you can set the start and end points for playback (starting point and duration in samples):</p><p>
-      <a class="ulink" href="patches/3-4-3-2-simply-play-array.pd" target="_top">patches/3-4-3-2-simply-play-array.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z28.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427780"></a>3.4.3.3 Playing back an array in a block</h4></div></div></div><p>The "tabwrite~" and "tabread~" objects also have another special form: "tabsend~" and "tabreceive~". They write/read an array in sync with the "blocks" (<a class="link" href="ch03.html#chapt3.1.1.3.2" title="3.1.1.3.2 DSP">3.1.1.3.2</a>). "tabwrite~" writes each block in an array (of course, these must be the size of a block, which is set to 64 samples by default in Pd).
-      "tabreceive~" reads the array in every block. We will return to this later in the chapter on FFT (<a class="link" href="ch03s08.html" title="3.8 Fourier analysis">3.8</a>).</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id427815"></a>3.4.3.4 Glissandi of samples</h4></div></div></div><p>You know that you can play back an array at normal pitch or an octave higher, etc. But what if you want a glissando from the octave to the original pitch? For this, you'll need to subdivide into "main indicator" and "addition". The  "main indicator" run at normal speed over the array. Let's use an array with 132300 points as an example, which equals 3000 milliseconds:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z29.jpg"></div></div><p>Then comes the "addition", which is what makes the glissando. Let's use a glissando that begins five chromatic steps above the original pitch and returns to the original pitch in 500 milliseconds. You need to make "line~" of this in reverse, then square the values:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z30.jpg"></div></div><p>Above this, you have to determine the factor for the frequencies of the five chromatic steps (cf. <a class="link" href="ch03.html#chapt3.1.1.4.3" title="3.1.1.4.3 Converting MIDI numbers into frequencies">3.1.1.4.3</a>)...</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z31.jpg"></div></div><p>...and finally conduct the following calculation:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4-3X.jpg"></div></div><p>This is the "addition" that is added to the "main indicator":</p><p>
-      <a class="ulink" href="patches/3-4-3-4-sample-glissando1.pd" target="_top">patches/3-4-3-4-sample-glissando1.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z32.jpg"></div></div><p>You can use any glissandi to the target pitch that you want; even negative values are possible:</p><p>
-      <a class="ulink" href="patches/3-4-3-4-sample-glissando2.pd" target="_top">patches/3-4-3-4-sample-glissando2.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4-3Y.jpg"></div></div><p>Conversely, to move away from the original tone:</p><p>
-      <a class="ulink" href="patches/3-4-3-4-sample-glissando3.pd" target="_top">patches/3-4-3-4-sample-glissando3.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4-3Z.jpg"></div></div><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id428164"></a>3.4.3.5 Additive synthesis with array</h4></div></div></div><p>As a special function in Pd, you can create a sum of sine tones in an array - i.e., additive synthesis as described in Chapter <a class="link" href="ch03s02.html" title="3.2 Additive Synthesis">3.2</a>. This is accomplished using the message "sinesum". The first argument is the (new) array size (should be a power of 2; three points will be added to this number automatically to ensure optimum connection of the beginning and ending of a phase) and also the volume factors for any number of partials:</p><p>
-      <a class="ulink" href="patches/3-4-3-5-sinesum.pd" target="_top">patches/3-4-3-5-sinesum.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z36.jpg"></div></div><p>Instead of sine waves, you could also use "cosinesum" to work with cosine waves.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id428244"></a>3.4.3.6 Latency </h4></div></div></div><p>Audio delay sometimes occurs when you don't want it to. You can even hear it when you have a microphone connected to a speaker and make an extremely short noise into the microphone, snapping your fingers, for example:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z37.jpg"></div></div><p>The sound card and especially the operating system determine the length of this "latency". Ideally the latency is so short (under 5 ms) that the human ear cannot perceive the delay. This requires a fast computer processor, a good sound card, and an appropriate operating system. You can set the latency under <span class="strong"><strong>Media</strong></span>  <span class="strong"><strong>Audio
-       settings</strong></span>:</p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z38.jpg"></div></div><p>In Microsoft Windows, you cannot at the present time (June 2008) achieve a latency of less than 50 ms without causing errors. </p><p> </p><p> </p><hr></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="chapt3.4.4"></a>3.4.4 For especially interested</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id428387"></a>3.4.4.1 4-point interpolation</h4></div></div></div><p>In this example you can see how "tabread4~" interpolation works:</p><p>
-      <a class="ulink" href="patches/3-4-4-1-four-point-interpolation.pd" target="_top">patches/3-4-4-1-four-point-interpolation.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z39.jpg"></div></div><p>The jump from 1 to -1 is 'softened' by a kind of sinusoidal interpolation. As the name implies, four points are used and altered: namely the two directly in front of and the two directly behind the interval that you want to interpolate.</p><p> </p><hr></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id428456"></a>3.4.4.2 Sample-wise delay</h4></div></div></div><p>One way to delay something by a certain number of samples with "delread~" and "vd~" is by using a subpatch (otherwise the problem of block size, described previously in relation to octave displacement):</p><p>
-      <a class="ulink" href="patches/3-4-4-2-samplewise-delay.pd" target="_top">patches/3-4-4-2-samplewise-delay.pd</a>
-     </p><div class="informalfigure"><div class="mediaobject"><img src="images/kap3/3-4z99.jpg"></div></div><p> </p><p> </p><hr></div></div></div><div class="navfooter"></p> <p><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html"><img src="images/prev.png" width="41" height="20" title="previous" alt="Prev"></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="p" href="ch03s05.html"><img src="images/next.png" width="41" height="20" title="next" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">3.3 Subtractive synthesis </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.5 Wave shaping</td></tr></table></div></body></html>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.1">
+<link rel="start" href="index.html"
+	title="Programming Electronic Music in Pd">
+<link rel="up" href="ch03.html" title="Chapter 3. Audio">
+<link rel="prev" href="ch03s03.html" title="3.3 Subtractive synthesis">
+<link rel="next" href="ch03s05.html" title="3.5 Wave shaping">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084"
+	alink="#0000FF">
+	<div class="navheader">
+		<table width="100%" summary="Navigation header">
+			<tr>
+				<th colspan="3" align="center">3.4 Sampling</th>
+			</tr>
+			<tr>
+				<td width="20%" align="left"><a accesskey="p"
+					href="ch03s03.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<th width="60%" align="center">Chapter 3. Audio</th>
+				<td width="20%" align="right"> <a accesskey="p"
+					href="ch03s05.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+		</table>
+		<hr>
+	</div>
+	<div class="sect1" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a name="id424582"></a>3.4 Sampling
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id424588"></a>3.4.1 Theory
+						</h3>
+					</div>
+				</div>
+			</div>
+			<p>Let's clear up a potentially problematic issue to avoid any
+				confusion: you've already learned that a sample is the smallest unit
+				used for measuring and generating sound in a computer. The word
+				'sample' unfortunately also has another, quite different meaning in
+				electronic music; it means a smallish section (usually a couple
+				seconds long) of recorded sound. This chapter deals with the
+				processing of short recorded bits of sound. First you'll have to
+				learn how "array" works in Pd, which requires a fair amount of
+				explanation.</p>
+			<p></p>
+			<hr>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id424610"></a>3.4.1.1 Storing sound
+							</h4>
+						</div>
+					</div>
+				</div>
+				<div class="sect4" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h5 class="title">
+									<a name="id424616"></a>3.4.1.1.1 Sound files
+								</h5>
+							</div>
+						</div>
+					</div>
+					<p>There are various locations in the computer where files can
+						be saved: main memory or hard disks. Access to main memory is very
+						fast in comparison to the hard disk; however, it has much less
+						available space.</p>
+					<p>In Pd you can save sound to both locations. Saving to the
+						hard disk means that you are saving a fixed sound file. WAV or
+						AIFF formats are typically used. Use the "writesf~" object to
+						write a sound file to disk. The argument is the number of
+						channels; this creates a corresponding number of inlets to which
+						you attach the sounds you want to record. First you have to use
+						the message "open [name]" to choose the name of the file you want
+						to create. Start recording using "start" and stop it using "stop".</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4a.jpg">
+						</div>
+					</div>
+					<p></p>
+					<hr>
+				</div>
+				<div class="sect4" lang="en">
+					<div class="titlepage">
+						<div>
+							<div>
+								<h5 class="title">
+									<a name="id424676"></a>3.4.1.1.2 Buffers
+								</h5>
+							</div>
+						</div>
+					</div>
+					<p>
+						The other possible location is the main memory. Create one place
+						for one sound using "array" (<span class="strong"><strong>Put
+						</strong></span> <span class="strong"><strong>Array</strong></span> then click
+						"ok"). It is also a visualization of the sound.
+					</p>
+					<p>Let's first think of an array simply as storage for numbers.
+						An array has a limited number of storage places. You can set this
+						number using by right-clicking the array and going to
+						"Properties". This opens two windows: one labeled "array" and the
+						other labeled "canvas". In the "array" window, you can set the
+						size. This number means the number of storage places. One number
+						can be stored in each storage place.</p>
+					<p>You can allocate these cells using "tabwrite". The right
+						argument determines the position; the left determines the value
+						you want to save (as always: from right to left). In the array,
+						the x-axis shows position and the y-axis shows the value:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4b.jpg">
+						</div>
+					</div>
+					<p>You can use "array" to represent functions:</p>
+					<p>
+						<a class="ulink" href="patches/3-4-1-1-2-function1.pd"
+							target="_top">patches/3-4-1-1-2-function1.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4c.jpg">
+						</div>
+					</div>
+					<p>Or without temporal stretching (if the example shown causes
+						a stack overflow, inserting "del 0" between "spigot" and "f" will
+						help):</p>
+					<p>
+						<a class="ulink" href="patches/3-4-1-1-2-function2.pd"
+							target="_top">patches/3-4-1-1-2-function2.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4d.jpg">
+						</div>
+					</div>
+					<p>You could also draw in the array itself with the mouse, 'by
+						hand' so to speak. If you move the mouse to a value in the array,
+						the cursor (shaped like an arrow) will change its direction and
+						you can draw by moving the mouse with the mouse button held.</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4e.jpg">
+						</div>
+					</div>
+					<p>Under 'Properties' (right-click on the array), you can set
+						the following:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4f.jpg">
+						</div>
+					</div>
+					<div class="itemizedlist">
+						<p class="title">
+							<b>In the "array" window:</b>
+						</p>
+						<ul type="square">
+							<li style="list-style-type: square"><p>Name: Like all
+									names in Pd, use alphanumeric characters without spaces, not
+									only numbers.</p></li>
+							<li style="list-style-type: square"><p>Size: As
+									described above.</p></li>
+							<li style="list-style-type: square"><p>"save contents":
+									When checked, all values in an array will be saved. If you use
+									large arrays or a large number of arrays, this could cause your
+									patch to load very slowly.</p></li>
+							<li style="list-style-type: square"><p>"draw as points"
+									/ "polygon" / "bezier curve": Different kinds of visualization.</p></li>
+							<li style="list-style-type: square"><p>"delete me": When
+									checked, this deletes the array! The empty box remains,
+									however, and must also be deleted.</p></li>
+							<li style="list-style-type: square"><p>"view list": This
+									displays all values in a list.</p></li>
+						</ul>
+					</div>
+					<div class="itemizedlist">
+						<p class="title">
+							<b>In the "canvas" window:</b>
+						</p>
+						<ul type="square">
+							<li style="list-style-type: square"><p>
+									"graph on parent": This will be discussed later in <a
+										class="link" href="ch03.html#chapt3.1.1.2"
+										title="3.1.1.2 Applications">3.1.1.2</a>.
+								</p></li>
+							<li style="list-style-type: square"><p>X range: You can
+									set the range for the x-axis here.</p></li>
+							<li style="list-style-type: square"><p>Y range: You can
+									set the range for the y-axis here. Values that fall outside
+									this range will also be saved, but this will enlarge the entire
+									window so that these values can be seen.</p></li>
+							<li style="list-style-type: square"><p>"size": Visual
+									size in the patch.</p></li>
+						</ul>
+					</div>
+					<p>An array can also receive messages and "sends".</p>
+					<p>Renaming:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4g.jpg">
+						</div>
+					</div>
+					<p>Making all values equal:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4h.jpg">
+						</div>
+					</div>
+					<p>Changing the size:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4i.jpg">
+						</div>
+					</div>
+					<p>The size can also be printed out:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4k.jpg">
+						</div>
+					</div>
+					<p>Writing the contents to a text file:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4l.jpg">
+						</div>
+					</div>
+					<p>Reading a text file:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4m.jpg">
+						</div>
+					</div>
+					<p>You can also enter values like this. The first number
+						determines which storage place to start with; all other values are
+						for the positions thereafter:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4n.jpg">
+						</div>
+					</div>
+					<p>You can also create hash marks on the axes and label them:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4o.jpg">
+							<div class="caption">The first argument is the starting
+								position; the second is the distance between the lines; the
+								third is the distance between the longer lines.</div>
+						</div>
+					</div>
+					<p>You can also number them:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4p.jpg">
+						</div>
+					</div>
+					<p>First, the position is labeled; second, the numbers you want
+						to display.</p>
+					<p>N.B.: Lines and labels are not stored in the patch, so you
+						have to reenter them every time you open the patch.</p>
+					<p>You can, of course, also store sound in an array. For a
+						computer, sound is - as has been often mentioned - nothing but a
+						string of numbers, 44100 numbers to be precise. You could store
+						one second of sound in an array; you'd just need to use 44100
+						storage places. Here's where the "tabwrite~" object comes into
+						play. It receives the sound input and otherwise just a bang.
+						Unlike with "tabwrite" (without a tilde) where you entered the
+						storage place in the right inlet 'by hand' and the corresponding
+						value on the left, when "tabwrite~" receives a "bang", it
+						automatically starts with the first storage place and then
+						proceeds at sample speed (44100 samples/sec). At the same time,
+						every place is allocated a value received by the left inlet from
+						the current sound, resulting in a total of 44100 stored numbers.
+						Any sound that follows is not stored. If you want to stop
+						prematurely, you can send a "stop" message.</p>
+					<p>
+						<a class="ulink" href="patches/3-4-1-1-2-normalize.pd"
+							target="_top">patches/3-4-1-1-2-normalize.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4q.jpg">
+						</div>
+					</div>
+					<p>If "tabwrite~" receives a float message, this number is
+						interpreted as a sample offset. In other words, the sample that
+						corresponds to this float number will be the starting point for
+						the array.</p>
+					<p>One useful function is that it's possible to raise the
+						overall volume after the fact. If, for example, the original
+						recording is too quiet (i.e., the membrane of the microphone
+						didn't vibrate especially strongly, which resulted in fairly small
+						values), you can amplify it. This is called "normalizing". For
+						this, you can use the following message:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4r.jpg">
+						</div>
+					</div>
+					<p>You can also make a connection between sound files located
+						in the main memory and those located on the hard disk in array.
+						This is achieved with the "soundfiler" object. This object allows
+						you to load a sound file stored on the hard disk into an array, or
+						to save the contents of an array on the hard disk as a sound file.
+						The command "read" is used to load a sound file. The arguments for
+						the command are the name of the file (with the path if necessary)
+						and then the name of the array to which you want to write.</p>
+					<p>
+						<a class="ulink" href="patches/3-4-1-1-2-load-soundfile.pd"
+							target="_top">patches/3-4-1-1-2-load-soundfile.pd</a>
+					</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4s.jpg">
+						</div>
+					</div>
+					<p>Once the file has successfully loaded, the size of the sound
+						file in samples will be sent out the "soundfiler" object's outlet.</p>
+					<p>You can also include other commands (called "flags") in the
+						message:</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4t.jpg">
+						</div>
+					</div>
+					<p>The resize command changes the array's size to match that of
+						the sample (this is limited to 4000000 samples - about 90 seconds,
+						though this can be changed with "maxsize").</p>
+					<p>Conversely, the command "write" saves the contents of an
+						array as a sound file to the hard disk. In this case, the format
+						(WAV or AIFF) must be given as a flag, then the name (with path
+						designation if necessary) of the file you want to create, and then
+						the name of the array.</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4u.jpg">
+						</div>
+					</div>
+					<div class="itemizedlist">
+						<p class="title">
+							<b>Other important "flags" in this context are:</b>
+						</p>
+						<ul type="square">
+							<li style="list-style-type: square"><p>normalize:
+									Optimizes a file's amplitude levels, as explained previously.</p></li>
+							<li style="list-style-type: square"><p>rate: Used to set
+									the sample rate for a file.</p></li>
+						</ul>
+					</div>
+					<p>As an alternative to array, you could also use "table".
+						Create a "table" object; enter the name for the first argument and
+						the size in samples for the second. This will create an array in a
+						subpatch (click on the object in execute mode) that is treated
+						like a normal array. This approach has the following advantage:
+						the graphics for a normal array can be very complex. You can
+						notice this when you move a big array around on the canvas: it
+						moves very slowly. But if the graphic representation of an array
+						is in a subpatch, the object itself can be moved much more easily.</p>
+					<div class="informalfigure">
+						<div class="mediaobject">
+							<img src="images/kap3/3-4v.jpg">
+						</div>
+					</div>
+					<p></p>
+					<p></p>
+					<hr>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id425813"></a>3.4.1.2 Playback of saved sound
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Sound files that are on an external storage device like a
+					hard disk can be read - that is, played back - in Pd with
+					"readsf~". As with "writesf~", you use the messages "start" and
+					"stop" (you could also use "1" and "0"). Enter the number of
+					channels as the argument. The rightmost output sends a bang when
+					the end of a file is reached.</p>
+				<p>
+					<a class="ulink" href="patches/3-4-1-2-play-file.pd" target="_top">patches/3-4-1-2-play-file.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4w.jpg">
+					</div>
+				</div>
+				<p>Let's look at the control level for 'array': let's say you
+					have an array with 10 storage places. You can use "tabread" to read
+					every one of these places:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-1-2-read-array1.pd"
+						target="_top">patches/3-4-1-2-read-array1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4y.jpg">
+					</div>
+				</div>
+				<p>The principle is basically the same for signals, except that
+					you have to receive the saved values at a rate of 44100 numbers per
+					second. That's why there is "tabread~". If you want to, say, play a
+					sound stored in an array that lasts 1.5 seconds (= 66150 samples),
+					you have to read the array values from 0 to 66149 at a rate of
+					44100 values a second. You can do this with "line~":</p>
+				<p>
+					<a class="ulink" href="patches/3-4-1-2-read-array2.pd"
+						target="_top">patches/3-4-1-2-read-array2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z1.jpg">
+						<div class="caption">
+							<p>"tabread~" receives the array name as an argument. You
+								could also set the array you want to read with the message "set
+								[arrayname]".</p>
+						</div>
+					</div>
+				</div>
+				<p>Now you can start to play with these values. For example, you
+					could play it back in twice the time:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z2.jpg">
+					</div>
+				</div>
+				<p>This cuts the playback speed in half. This causes everything
+					to sound an octave lower because the time stretching makes all the
+					soundwaves twice as long, which means their frequencies will be cut
+					in half and thus sound an octave lower.</p>
+				<p>
+					This leads the problem that every single sample you use needs to be
+					played twice or else there will be gaps. To avoid this problem,
+					there is a modified form of the "tabread~" object called
+					"tabread4~", which interpolates intermediate values that it
+					generates using information from the values that ultimately precede
+					and follow it. (More specific information on this function is
+					available at <a class="link" href="ch03s04.html#chapt3.4.4"
+						title="3.4.4 For especially interested">3.4.4</a>.) In most cases,
+					"tabread4~" is more suitable for reading arrays. This requires a
+					readout spectrum from 1 to n - 2, where 'n' is the size of the
+					array you want to read.
+				</p>
+				<p>Of course, you could also play something back faster, which
+					would raise the frequency:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z3.jpg">
+					</div>
+				</div>
+				<p>Later, when granular synthesis is explained, you'll learn how
+					to alter tempo and pitch independently.</p>
+				<p>Playing a sample backwards is naturally also a possibility:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z5.jpg">
+					</div>
+				</div>
+				<p>You could also use the "phasor~" object:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z4.jpg">
+					</div>
+				</div>
+				<p>"phasor~" generates a series of numbers between 0 and 1 as a
+					signal. If you multiply these values by 66148, you get a series of
+					numbers from 0 to 66148. Enter 0.75 for the frequency so that the
+					series occurs in exactly 1.5 seconds.</p>
+				<p>Another possibility would be to create your own array for the
+					arrangement of the readout and use it to play back the first array:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-1-2-read-array3.pd"
+						target="_top">patches/3-4-1-2-read-array3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z6.jpg">
+					</div>
+				</div>
+				<p>Or you could use an array to control the amplitude:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z7.jpg">
+					</div>
+				</div>
+				<p>Or to control the frequency:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z8.jpg">
+					</div>
+				</div>
+				<p>Once again you can see: we're using only numbers to control
+					various parameters.</p>
+				<p>You can use as many "tabread~" objects as you like to read
+					from the same array. However, you should never use two arrays with
+					the same name, as it will almost certainly lead to errors.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id426355"></a>3.4.1.3 Audio delay
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					In Chapter <a class="link" href="ch02s02.html#chapt2.2.3.1.2"
+						title="2.2.3.1.2 Delay">2.2.3.1.2</a> we mentioned how numbers or
+					series of numbers can be delayed. You can also do this with
+					signals. This is done by creating a buffer into which signals are
+					written and out of which signals are read following a certain
+					delay. To create this buffer, you use a "delwrite~" object. The
+					first argument is a freely chosen name; the second is the size in
+					milliseconds. As input, give it the signal you want it to write in
+					the buffer. Once the buffer is full, it is written over again from
+					the beginning. If the buffer is 1000 milliseconds long, the last
+					1000 milliseconds of the incoming signal are stored in the buffer.
+				</p>
+				<p>Use "delread~" to read from the buffer. The first argument is
+					again the buffer name; the second is the delay (in milliseconds;
+					can be changed using a control data entry in the input):</p>
+				<p>
+					<a class="ulink" href="patches/3-4-1-3-delay.pd" target="_top">patches/3-4-1-3-delay.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z9.jpg">
+					</div>
+				</div>
+				<p>Logically the amount of delay in "delread~" must be smaller
+					than or equal to the buffer size. If you have a delay of 2000
+					milliseconds but the buffer holds only 1000 milliseconds, it
+					clearly won't work. Using a negative number for the delay interval
+					is also impossible, as even Pd can't see into the future. You can
+					use as many "delread~" objects as you like to read simultaneously
+					from a delay buffer. You cannot look into the wave patterns in the
+					buffer.</p>
+				<p>While you can change the delay interval in "delread~", you
+					have to use a control data entry and there is a certain probability
+					of error once you exceed a certain speed (this is again a conflict
+					between control data and signals). For this reason, there is a
+					special object for variable readings of delay buffers called "vd~"
+					(short for "variable delay"). You give the delay interval (in
+					milliseconds) as a signal as input and can change it however you
+					like (though, again, you can't use negative numbers or exceed the
+					buffer size):</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z10.jpg">
+					</div>
+				</div>
+				<p>"vd~", like "readsf4~", creates an interpolation.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id426491"></a>3.4.2 Applications
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id426497"></a>3.4.2.1 A simple sampler
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-4-2-1-simple-sampler.pd"
+						target="_top">patches/3-4-2-1-simple-sampler.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z11.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id426555"></a>3.4.2.2 With variable speed
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-4-2-2-sampler2.pd" target="_top">patches/3-4-2-2-sampler2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z12.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id426612"></a>3.4.2.3 Any position
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Here's one way to pick out any position from a sample that
+					you want:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-3-sampler3.pd" target="_top">patches/3-4-2-3-sampler3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z13.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="chapt3.4.2.4"></a>3.4.2.4 Sampler-player
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					If you change the graphic representation as described previously (<a
+						class="link" href="ch02s02.html#chapt2.2.4"
+						title="2.2.4 Miscellaneous">2.2.4</a>), then your patch could look
+					like this:
+				</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-4-sampler-big.pd"
+						target="_top">patches/3-4-2-4-sampler-big.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z14.jpg">
+					</div>
+				</div>
+				<p>Four canvas objects make up the colorful background of the
+					sliders and array. N.B.: The graphics that were created last always
+					appear on top of the other ones. Let's say you have "array1" and
+					then you make a colored canvas object; you have to create "array1"
+					once again (just copy and then delete the old one) so that it
+					appears on top of the canvas object.</p>
+				<p>To explain exactly how this was done:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<table border="0" summary="manufactured viewport for HTML img"
+							cellspacing="0" cellpadding="0" width="839">
+							<tr>
+								<td><img src="images/kap3/3-4z15.jpg" width="839"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<p>And in the subpatch:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z16.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id426839"></a>3.4.2.5 Loop generator
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-4-2-5-loop-generator1.pd"
+						target="_top">patches/3-4-2-5-loop-generator1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<table border="0" summary="manufactured viewport for HTML img"
+							cellspacing="0" cellpadding="0" width="613">
+							<tr>
+								<td><img src="images/kap3/3-4z17.jpg" width="613"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<p>But with this loop generator, clicks occur. First, it is
+					highly recommended that you put the array in a subpatch, because
+					the graphic requires a lot of processing power. Second, on the
+					loop's ends you should briefly go to 0 so that there is no sudden
+					jump in value (which would cause a click). For this, you need to
+					program "windowing". In sync with the readout of the array, this is
+					determined in the amplitude by another array (here, "crown") that
+					controls the dynamic envelope. This envelope has a value of zero at
+					the beginning and end to ensure that there is no sudden change to
+					the value when the loop repeats. Instead of the "crown" window, you
+					could also use a "Hanning" window, which uses a part of the sine
+					function (this will be covered later). Of course, the "crown" array
+					should also be in another window as well, but it has been left this
+					way for the sake of clarity.</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<table border="0" summary="manufactured viewport for HTML img"
+							cellspacing="0" cellpadding="0" width="628">
+							<tr>
+								<td><img src="images/kap3/3-4z18.jpg" width="628"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<p>A simpler version of the loop can be created using feedback:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-5-loop-generator2.pd"
+						target="_top">patches/3-4-2-5-loop-generator2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z19.jpg">
+					</div>
+				</div>
+				<p>A drawback to this is that there is a maximum loop duration;
+					here it is 10000 milliseconds.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427013"></a>3.4.2.6 Reverb
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You can simulate a "reverb" effect if the signal feedback
+					gets quieter and quieter:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z20.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427067"></a>3.4.2.7 Texture
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Or you can create a texture:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-7-texture.pd" target="_top">patches/3-4-2-7-texture.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z21.jpg">
+					</div>
+				</div>
+				<p>You have to be careful that the feedback doesn't 'explode',
+					i.e., that its volume doesn't increase exponentially.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427134"></a>3.4.2.8 Comb filter
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You can build a comb filter using audio delay. The idea is
+					that you add the delay to the original signal. This results in
+					amplifications and cancellations at regular intervals, which gives
+					the spectrum the appearance of a comb:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-8-combfilter.pd" target="_top">patches/3-4-2-8-combfilter.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z22.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="chapt3.4.2.9"></a>3.4.2.9 Octave doubler
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>If you know the frequency of a signal's fundamental, you can
+					construct an octave doubler as follows: Let's take a wave...</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z23.jpg">
+					</div>
+				</div>
+				<p>...and this signal delayed by half the length of one
+					period...</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z24.jpg">
+					</div>
+				</div>
+				<p>...adding them together gives you 0 (= cancellation). If you
+					delay a periodic signal by the half the duration of one period and
+					add it to the original, the fundamental tone (and all odd partials)
+					is cancelled out. That would look like this:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z25.jpg">
+					</div>
+				</div>
+				<p>
+					But it doesn't quite work like that. You have to remember that Pd
+					processes all audio data in blocks of 64 samples (unless you change
+					the setting), because it is more efficient than individually
+					processing each sample (cf. <a class="link"
+						href="ch03.html#chapt3.1.1.3.2" title="3.1.1.3.2 DSP">3.1.1.3.2</a>).
+					With the above patch, you'd get a delay of 1,136 milliseconds, or
+					50 samples. You could alleviate this problem by using a buffer with
+					a one-block delay (64 samples = 1,451 ms) to read the original; the
+					same goes for the delay offset:
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z26.jpg">
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-4-2-9-oktavedoubler.pd"
+						target="_top">patches/3-4-2-9-oktavedoubler.pd</a>
+				</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="chapt3.4.2.10"></a>3.4.2.10 Karplus-Strong algorithm
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>A special use of looping is the Karplus-Strong algorithm. It
+					is one of the first examples of physical modeling synthesis, a
+					process that attempts to replicate what occurs when a physical
+					material vibrates. In our example, the physical model is a plucked
+					string. When it is plucked, a string first vibrates chaotically
+					then adjusts itself to the length of the string. It also loses
+					energy, i.e., the vibration dies away. This can be reconstructed
+					mathematically by taking an excerpt of white noise and playing it
+					back periodically again and again by writing it to and reading it
+					from a buffer:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-10-karplus-strong1.pd"
+						target="_top">patches/3-4-2-10-karplus-strong1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z33.jpg">
+					</div>
+				</div>
+				<p>The string effect can be enhanced if the material you start
+					with vibrates more and more 'softly'. This works with by
+					calculating the average: the average of every two samples is taken
+					and this result is written to the buffer in place of the original
+					values. The vibration becomes less and less 'angular'. Use the
+					object "z~" (Pd-extended) to set the delay to one sample; enter the
+					number of samples as the argument:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-2-10-karplus-strong2.pd"
+						target="_top">patches/3-4-2-10-karplus-strong2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z34.jpg">
+					</div>
+				</div>
+				<p>The tone is different every time. This is because "noise~"
+					produces random numbers, which are naturally different every time.
+					We could add the calculation for the resulting frequencies:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z35.jpg">
+					</div>
+				</div>
+				<p>
+					<a class="ulink" href="patches/3-4-2-10-karplus-strong3.pd"
+						target="_top">patches/3-4-2-10-karplus-strong3.pd</a>
+				</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427592"></a>3.4.2.11 More exercises
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>a) Build a record function into the sample player.</p>
+				<p>b) Create a patch for reverb or a texture with different
+					delay times for the input signal, e.g., with multiples of the
+					Fibonacci series (in which the next number is always the sum of the
+					previous two: 0 1 1 2 3 5 8 13).</p>
+				<p>c) Use different Karplus-Strong sounds to make textures of
+					varying densities.</p>
+				<p>d) Apply a comb filter to patches presented in the previous
+					sections.</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="id427629"></a>3.4.3 Appendix
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427636"></a>3.4.3.1 Array oscillator
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>One way to simplify the combination of "tabread~" and a
+					multiplied "phasor~" signal is "tabosc4~". This reads out an array
+					for the frequency you enter. One limitation of this method is that
+					the size of the array must be a power of two (e.g., 128, 512, 1024)
+					plus three points (here, 1027 = 1024 + 3).</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-1-arrayoscillator.pd"
+						target="_top">patches/3-4-3-1-arrayoscillator.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z27.jpg">
+					</div>
+				</div>
+				<p>
+					This touches on "wave shaping", a topic that will be further
+					explained in <a class="link" href="ch03s05.html"
+						title="3.5 Wave shaping">chapter 3.5</a>. You can draw any wave
+					into an array using the mouse.
+				</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427715"></a>3.4.3.2 Array playback
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Yet another simplification is "tabplay~"; it simply plays an
+					array back at the original speed (when banged). Conveniently, you
+					can set the start and end points for playback (starting point and
+					duration in samples):</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-2-simply-play-array.pd"
+						target="_top">patches/3-4-3-2-simply-play-array.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z28.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427780"></a>3.4.3.3 Playing back an array in a block
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					The "tabwrite~" and "tabread~" objects also have another special
+					form: "tabsend~" and "tabreceive~". They write/read an array in
+					sync with the "blocks" (<a class="link"
+						href="ch03.html#chapt3.1.1.3.2" title="3.1.1.3.2 DSP">3.1.1.3.2</a>).
+					"tabwrite~" writes each block in an array (of course, these must be
+					the size of a block, which is set to 64 samples by default in Pd).
+					"tabreceive~" reads the array in every block. We will return to
+					this later in the chapter on FFT (<a class="link"
+						href="ch03s08.html" title="3.8 Fourier analysis">3.8</a>).
+				</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id427815"></a>3.4.3.4 Glissandi of samples
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>You know that you can play back an array at normal pitch or
+					an octave higher, etc. But what if you want a glissando from the
+					octave to the original pitch? For this, you'll need to subdivide
+					into "main indicator" and "addition". The "main indicator" run at
+					normal speed over the array. Let's use an array with 132300 points
+					as an example, which equals 3000 milliseconds:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z29.jpg">
+					</div>
+				</div>
+				<p>Then comes the "addition", which is what makes the glissando.
+					Let's use a glissando that begins five chromatic steps above the
+					original pitch and returns to the original pitch in 500
+					milliseconds. You need to make "line~" of this in reverse, then
+					square the values:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z30.jpg">
+					</div>
+				</div>
+				<p>
+					Above this, you have to determine the factor for the frequencies of
+					the five chromatic steps (cf. <a class="link"
+						href="ch03.html#chapt3.1.1.4.3"
+						title="3.1.1.4.3 Converting MIDI numbers into frequencies">3.1.1.4.3</a>)...
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z31.jpg">
+					</div>
+				</div>
+				<p>...and finally conduct the following calculation:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4-3X.jpg">
+					</div>
+				</div>
+				<p>This is the "addition" that is added to the "main indicator":</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-4-sample-glissando1.pd"
+						target="_top">patches/3-4-3-4-sample-glissando1.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z32.jpg">
+					</div>
+				</div>
+				<p>You can use any glissandi to the target pitch that you want;
+					even negative values are possible:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-4-sample-glissando2.pd"
+						target="_top">patches/3-4-3-4-sample-glissando2.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4-3Y.jpg">
+					</div>
+				</div>
+				<p>Conversely, to move away from the original tone:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-4-sample-glissando3.pd"
+						target="_top">patches/3-4-3-4-sample-glissando3.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4-3Z.jpg">
+					</div>
+				</div>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id428164"></a>3.4.3.5 Additive synthesis with array
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>
+					As a special function in Pd, you can create a sum of sine tones in
+					an array - i.e., additive synthesis as described in Chapter <a
+						class="link" href="ch03s02.html" title="3.2 Additive Synthesis">3.2</a>.
+					This is accomplished using the message "sinesum". The first
+					argument is the (new) array size (should be a power of 2; three
+					points will be added to this number automatically to ensure optimum
+					connection of the beginning and ending of a phase) and also the
+					volume factors for any number of partials:
+				</p>
+				<p>
+					<a class="ulink" href="patches/3-4-3-5-sinesum.pd" target="_top">patches/3-4-3-5-sinesum.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z36.jpg">
+					</div>
+				</div>
+				<p>Instead of sine waves, you could also use "cosinesum" to work
+					with cosine waves.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id428244"></a>3.4.3.6 Latency
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>Audio delay sometimes occurs when you don't want it to. You
+					can even hear it when you have a microphone connected to a speaker
+					and make an extremely short noise into the microphone, snapping
+					your fingers, for example:</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z37.jpg">
+					</div>
+				</div>
+				<p>
+					The sound card and especially the operating system determine the
+					length of this "latency". Ideally the latency is so short (under 5
+					ms) that the human ear cannot perceive the delay. This requires a
+					fast computer processor, a good sound card, and an appropriate
+					operating system. You can set the latency under <span
+						class="strong"><strong>Media</strong></span> <span class="strong"><strong>Audio
+							settings</strong></span>:
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z38.jpg">
+					</div>
+				</div>
+				<p>In Microsoft Windows, you cannot at the present time (June
+					2008) achieve a latency of less than 50 ms without causing errors.
+				</p>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+		<div class="sect2" lang="en">
+			<div class="titlepage">
+				<div>
+					<div>
+						<h3 class="title">
+							<a name="chapt3.4.4"></a>3.4.4 For especially interested
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id428387"></a>3.4.4.1 4-point interpolation
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>In this example you can see how "tabread4~" interpolation
+					works:</p>
+				<p>
+					<a class="ulink" href="patches/3-4-4-1-four-point-interpolation.pd"
+						target="_top">patches/3-4-4-1-four-point-interpolation.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z39.jpg">
+					</div>
+				</div>
+				<p>The jump from 1 to -1 is 'softened' by a kind of sinusoidal
+					interpolation. As the name implies, four points are used and
+					altered: namely the two directly in front of and the two directly
+					behind the interval that you want to interpolate.</p>
+				<p></p>
+				<hr>
+			</div>
+			<div class="sect3" lang="en">
+				<div class="titlepage">
+					<div>
+						<div>
+							<h4 class="title">
+								<a name="id428456"></a>3.4.4.2 Sample-wise delay
+							</h4>
+						</div>
+					</div>
+				</div>
+				<p>One way to delay something by a certain number of samples
+					with "delread~" and "vd~" is by using a subpatch (otherwise the
+					problem of block size, described previously in relation to octave
+					displacement):</p>
+				<p>
+					<a class="ulink" href="patches/3-4-4-2-samplewise-delay.pd"
+						target="_top">patches/3-4-4-2-samplewise-delay.pd</a>
+				</p>
+				<div class="informalfigure">
+					<div class="mediaobject">
+						<img src="images/kap3/3-4z99.jpg">
+					</div>
+				</div>
+				<p></p>
+				<p></p>
+				<hr>
+			</div>
+		</div>
+	</div>
+	<div class="navfooter">
+		</p>
+		<p>
+		<table width="100%" summary="Navigation footer">
+			<tr>
+				<td width="40%" align="left"><a accesskey="p"
+					href="ch03s03.html"><img src="images/prev.png" width="41"
+						height="20" title="previous" alt="Prev"></a> </td>
+				<td width="20%" align="center"><a accesskey="u"
+					href="ch03.html">Up</a></td>
+				<td width="40%" align="right"> <a accesskey="p"
+					href="ch03s05.html"><img src="images/next.png" width="41"
+						height="20" title="next" alt="Next"></a></td>
+			</tr>
+			<tr>
+				<td width="40%" align="left" valign="top">3.3 Subtractive
+					synthesis </td>
+				<td width="20%" align="center"><a accesskey="h"
+					href="index.html">Home</a></td>
+				<td width="40%" align="right" valign="top"> 3.5 Wave shaping</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
