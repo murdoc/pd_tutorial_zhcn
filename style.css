@@ -1,0 +1,183 @@
+@charset "utf-8";
+/* CSS Document */
+/* Design: www.himbeergeist.net | Esther Kochte | Berlin 2009 */
+
+body {
+	background-image:url(images/hg.gif);
+	background-repeat:repeat-y;
+	margin: 10px 400px 10px 40px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+	
+/*Überschriften*/
+
+h1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 35px;
+	font-weight: bold;
+	color: #e62159;
+	letter-spacing:1px;
+	padding: 0px 0 2px 0;
+	margin-top:0;
+}
+
+
+h2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	letter-spacing:1px;
+	color: #e62159;
+	margin-top:50px;
+	}
+	
+h3 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing:1px;
+	color: #333;
+	margin-top:60px;
+	}
+	
+h4 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	letter-spacing:1px;
+	color: #666;
+	margin-top:50px;
+	}
+	
+h5 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #000;
+	margin-top:45px;
+	}
+
+	
+.author {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	}
+	
+.pubdate {
+	font-size: 0.80em;
+	margin-bottom:20px;
+	}
+	
+.email {
+	font-size: 0.80em;
+}
+	
+/* paragraphs */
+p {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 0.80em;
+	line-height: 17px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	letter-spacing:0.1em;
+	width:90%;
+	}
+	
+.toc {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 0.80em;
+	font-weight:bold;
+}
+	
+/* Images */
+p img {
+	font-size:9px;
+	padding: 0;
+	max-width: 100%;
+	}
+
+img.centered {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+img.alignright {
+	padding: 10px 0px 10px 10px;
+	margin: 0 0 2px 7px;
+	display: inline;
+	}
+
+img.alignleft {
+	padding: 7px 10px 7px 0px;
+	margin: 0 7px 2px 0;
+	display: inline;
+	}
+
+.alignright {
+	float: right;
+	}
+
+.alignleft {
+	float: left;
+	}
+	
+	
+/*links*/
+
+a {color:#666; text-decoration:underline; font-weight:bold;}
+a:link { color:#666; text-decoration:none;}
+a:visited { color:#666; text-decoration:none;}
+a:hover { color:#333; text-decoration:underline;}
+a:active { color:#333; text-decoration:underline;}
+
+
+.next {
+height:50px;
+padding:5px 6px 5px 5px;
+}
+
+.prev {}
+
+
+a img  {
+    border: none;
+}
+
+
+/* horiz. line */
+
+hr {
+clear:both; 
+color:#e62159;
+border-top:dotted 1px;
+border-bottom:none;
+margin: 15px 0px 15px -15px;
+width: 95%;
+}
+
+/*table*/
+
+table {
+width: 95%;
+height:auto;
+border: 1px solid #CCC;
+-moz-border-radius-topright: 10px;
+-moz-border-radius-bottomleft: 10px;
+-moz-border-radius-bottomright: 10px;
+-webkit-border-radius-topright: 10px;
+-webkit-border-radius-bottomleft: 10px;
+-webkit-border-radius-bottomright: 10px;
+border-radius-topright: 10px;
+border-radius-bottomleft: 10px;
+border-radius-bottomright: 10px;
+padding:5px;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 11px;
+text-align:left;
+line-height: 14px;
+background-color:#CCC;
+margin-bottom:15px;
+margin-left: -15px;
+}
